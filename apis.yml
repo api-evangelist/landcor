@@ -1,0 +1,132 @@
+aid: landcor
+url: https://raw.githubusercontent.com/api-evangelist/landcor/refs/heads/main/apis.yml
+name: Landcor Data
+kind: company
+description: >-
+  Landcor Data Corporation is a New Westminster, British Columbia property data and
+  automated valuation company, founded in 2000, that sells residential valuations,
+  assessment detail and land title documents across the roughly 1.9 million residential
+  properties in BC. It sits in the valuation and public-record layer of the Canadian
+  value chain rather than the listings layer: its inputs are BC Assessment detail, Land
+  Title and Survey Authority (LTSA) title and document search, BC Registry Services,
+  municipal tax certificates and materials licensed from the Integrated Cadastral
+  Information Society (ICIS), and its outputs are the Valuator AVM report, the Adjusted
+  Value Profiler, the Property Profiler, Title Search Plus and historic valuation
+  reports sold to lenders, appraisers, notaries, insurers and brokerages. Its API
+  posture is the unusual case in this study: a real, live, anonymously readable
+  machine-readable contract exists with no developer programme around it. The host
+  api.landcor.com runs a FastAPI service on Azure App Service in Canada Central that
+  serves a valid OpenAPI 3.1.0 document titled "Landcor Property API" version 0.1.0 at
+  /openapi.json, with Swagger UI at /docs and ReDoc at /redoc, all returning HTTP 200
+  without credentials. Twelve operations cover property search, property detail, PDF
+  report retrieval, valuation range, valuation history, loan-to-value checks,
+  neighbourhood sales series, comparables, address autocomplete and an AVM narrative
+  summary. Every operation except /health requires an HTTP Bearer token and returns
+  401 "Missing token" without one, and no route to obtain that token is published
+  anywhere: landcor.com carries no developer, API, partner or data-licensing page, does
+  not link api.landcor.com at all, and the store.landcor.com self-serve account is for
+  buying individual reports through the web store, not for API credentials. RESO is
+  absent, which is the expected Canadian answer. Landcor is not among the nineteen
+  Canadian organizations RESO lists as members, holds no Web API or Data Dictionary
+  certification, exposes no OData $metadata document, and uses its own PID identifier
+  rather than the RESO Universal Property Identifier. No open, unlicensed dataset is
+  published: the underlying assessment, title and cadastral data is licensed to Landcor
+  from provincial bodies and resold, so the public record itself is a commercial
+  product here.
+image: https://www.landcor.com/wp-content/uploads/2026/01/favicon-152.png
+tags:
+- Real Estate
+- Canada
+- Valuation
+- AVM
+- Property Records
+- Title
+- Land Registry
+- Mortgage
+- PropTech
+- Property Data
+created: '2026-07-26'
+modified: '2026-07-26'
+specificationVersion: '0.19'
+apis:
+- aid: landcor:landcor-property-api
+  name: Landcor Property API
+  description: >-
+    The Landcor Property API is a live REST service on api.landcor.com that publishes a
+    valid OpenAPI 3.1.0 contract titled "Landcor Property API" version 0.1.0, served
+    anonymously at https://api.landcor.com/openapi.json (HTTP 200, 47,840 bytes, fetched
+    2026-07-26) with interactive Swagger UI at /docs and ReDoc at /redoc. It exposes
+    twelve operations across four tags. Property covers GET /property/search (address
+    filters for unit number, street direction, street number, street name and postal
+    code), GET /property/{pid} for full property detail keyed on the Landcor PID in
+    xxx-xxx-xxx format, GET /property/{pid}/report/pdf which returns a base64-encoded,
+    password-protected PDF report, and GET /address/autocomplete. Valuation covers GET
+    /valuationRange/{pid}, GET /valuationRange/{pid}/updates, GET
+    /valuationRange/{pid}/history, POST /valuation/ltv-check for loan-to-value
+    comparison against the AVM value, and GET
+    /valuation/neighbourhood/{neighbourhood_code}/{unit_type_code}/sales for aggregated
+    monthly or rolling-three-month neighbourhood sales series. Comparables covers GET
+    /comparables/{pid}. AVM Summary covers POST /generate-avm-summary, which generates a
+    narrative summary from Landcor AVM data. Health covers GET /health, the only
+    unauthenticated operation, which returns {"status":"ok"}. Authentication is a single
+    HTTPBearer security scheme; every other operation declares it and returns HTTP 401
+    with {"detail":"Missing token"} when called anonymously, verified against
+    /property/search, /address/autocomplete and /valuationRange/{pid} on 2026-07-26. The
+    contract is public but the credentials are not: Landcor publishes no developer
+    portal, no key issuance page, no API pricing and no API terms, and does not reference
+    api.landcor.com anywhere on landcor.com, so tokens are obtainable only through a
+    direct commercial arrangement with the company. The specification's own operation
+    descriptions disclose the implementation behind it, naming the stored procedure
+    USP_SEARCH_SERVICE_PROPERTY and a legacy Landcor SOAP webservice that produces the
+    PDF report, which is recorded here as harvested fact rather than as documentation
+    Landcor intended to publish.
+  humanURL: https://api.landcor.com/docs
+  baseURL: https://api.landcor.com
+  tags:
+  - Property
+  - Valuation
+  - AVM
+  - Comparables
+  - Real Estate
+  - Canada
+  properties:
+  - type: OpenAPI
+    url: openapi/landcor-property-api-openapi.json
+  - type: Documentation
+    url: https://api.landcor.com/docs
+  - type: APIReference
+    url: https://api.landcor.com/redoc
+  - type: Authentication
+    url: https://api.landcor.com/docs
+common:
+- type: Website
+  url: https://www.landcor.com/
+- type: Products
+  url: https://www.landcor.com/online-property-tools/
+- type: Pricing
+  url: https://www.landcor.com/pricing/
+- type: SignUp
+  url: https://store.landcor.com/user/user_add.aspx
+- type: Login
+  url: https://store.landcor.com/user/login.aspx
+- type: Support
+  url: https://www.landcor.com/support/
+- type: Contact
+  url: https://www.landcor.com/contact/
+- type: Blog
+  url: https://www.landcor.com/about-us/landcor-news/
+- type: BlogRSS
+  url: https://www.landcor.com/feed/
+- type: PrivacyPolicy
+  url: https://www.landcor.com/privacy-policy/
+- type: TermsOfService
+  url: https://www.landcor.com/acceptable-use/
+- type: SecurityPolicy
+  url: https://www.landcor.com/security-policy/
+- type: GitHubOrganization
+  url: https://github.com/Landcor
+- type: LinkedIn
+  url: https://ca.linkedin.com/company/landcor-data-corporation
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
