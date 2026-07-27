@@ -1,0 +1,89 @@
+arazzo: 1.0.1
+info:
+  title: Landcor — loan-to-value check and valuation report
+  summary: Run a proposed mortgage amount against Landcor's AVM value for a BC property and retrieve the password-protected PDF valuation report for the file.
+  version: 1.0.0
+  description: >-
+    The lender / mortgage-broker flow. Authored by API Evangelist from the live Landcor Property
+    API OpenAPI 3.1.0 document; every operationId was verified verbatim against
+    openapi/landcor-property-api-openapi.json. All steps require an Authorization: Bearer token,
+    for which Landcor publishes no issuance route.
+sourceDescriptions:
+- name: landcor
+  url: ../openapi/landcor-property-api-openapi.json
+  type: openapi
+workflows:
+- workflowId: ltv-check-and-report
+  summary: PID plus a proposed loan amount in; AVM band, LTV verdict and the encrypted PDF report out.
+  description: >-
+    The AVM range is read BEFORE the LTV check on purpose — the check returns only booleans
+    (has_avm, avm_exceeds_ltv) and never the valuation itself, so without step 1 you can report a
+    verdict but not the number behind it.
+  inputs:
+    type: object
+    required: [pid, ltv_amount]
+    properties:
+      pid:
+        type: string
+        pattern: ^\d{3}-\d{3}-\d{3}$
+        description: Landcor property identifier in xxx-xxx-xxx form. Resolve it first with the address-to-valuation workflow.
+      ltv_amount:
+        type: number
+        description: Proposed loan amount to test against the AVM value.
+  steps:
+  - stepId: read-valuation-range
+    description: Current AVM low/high band for the subject property.
+    operationId: read_valuation_range_valuationRange__pid__get
+    parameters:
+    - name: pid
+      in: path
+      value: $inputs.pid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      low_range_value: $response.body#/low_range_value
+      high_range_value: $response.body#/high_range_value
+  - stepId: run-ltv-check
+    description: >-
+      Stateless comparison — this POST creates nothing. Read has_avm first: false means Landcor
+      holds no AVM value for the PID, in which case avm_exceeds_ltv carries no meaning and must
+      not be reported as a pass or a fail.
+    operationId: run_ltv_check_valuation_ltv_check_post
+    requestBody:
+      contentType: application/json
+      payload:
+        pid: $inputs.pid
+        ltv_amount: $inputs.ltv_amount
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      has_avm: $response.body#/has_avm
+      avm_exceeds_ltv: $response.body#/avm_exceeds_ltv
+      ltv_amount: $response.body#/ltv_amount
+  - stepId: read-property-pdf
+    description: >-
+      Retrieve the valuation report. Returns a JSON envelope containing a base64-encoded,
+      PASSWORD-PROTECTED PDF in encrypted_pdf — not an application/pdf body, and the API does not
+      supply the password. Backed by a legacy Landcor SOAP webservice: an undeclared 404 means the
+      PID could not be resolved to assessment area, jurisdiction and roll number, and an
+      undeclared 502 means the upstream SOAP service failed (retry a 502, never a 404).
+    operationId: read_property_pdf_property__pid__report_pdf_get
+    parameters:
+    - name: pid
+      in: path
+      value: $inputs.pid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      encrypted_pdf: $response.body#/encrypted_pdf
+      aa_code: $response.body#/aa_code
+      j_code: $response.body#/j_code
+      roll_number: $response.body#/roll_number
+      valuation: $response.body#/valuation
+  outputs:
+    valuation_low: $steps.read-valuation-range.outputs.low_range_value
+    valuation_high: $steps.read-valuation-range.outputs.high_range_value
+    has_avm: $steps.run-ltv-check.outputs.has_avm
+    avm_exceeds_ltv: $steps.run-ltv-check.outputs.avm_exceeds_ltv
+    encrypted_pdf: $steps.read-property-pdf.outputs.encrypted_pdf
+    roll_number: $steps.read-property-pdf.outputs.roll_number

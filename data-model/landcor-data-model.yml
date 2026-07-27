@@ -1,0 +1,235 @@
+generated: '2026-07-26'
+method: derived
+source: openapi/landcor-property-api-openapi.json (37 component schemas, 12 operations)
+note: >-
+  Entity graph derived mechanically from the OpenAPI $ref links and the identifier fields that
+  cross operations. Landcor has no published object reference to search, so id semantics below
+  are read off the spec's own field names, patterns and descriptions. The model is unusual for
+  a REST API: there are no server-side resources with lifecycles — every schema is a
+  projection of the BC public record keyed on one identifier, the Landcor PID.
+identifiers:
+- name: pid
+  entity: Property
+  format: ^\d{3}-\d{3}-\d{3}$
+  description: Landcor property identifier, the primary key of the whole API. Not the RESO UPI.
+- name: neighbourhood_code
+  entity: Neighbourhood
+  source_field: BCAssessmentSection.neighbourhood_code
+  description: BC Assessment neighbourhood identifier; required as a path parameter by the neighbourhood sales series.
+- name: unit_type_code
+  entity: UnitType
+  source_field: PropertyUsageSection.unit_type_code
+  description: Unit-type grouping used to bucket comparable properties; path parameter on the sales series.
+- name: aa_code
+  entity: AssessmentArea
+  source_field: PropertyReportPdfResponse.aa_code / BCAssessmentSection.assessment_area_code
+  description: BC Assessment area code, resolved from the PID to drive the legacy SOAP report service.
+- name: j_code
+  entity: Jurisdiction
+  source_field: PropertyReportPdfResponse.j_code / BCAssessmentSection.jurisdiction_code
+  description: Municipal jurisdiction code.
+- name: roll_number
+  entity: AssessmentRoll
+  source_field: PropertyReportPdfResponse.roll_number / BCAssessmentSection.roll_number
+  description: Assessment roll number within a jurisdiction; with aa_code and j_code it is the BC Assessment composite key.
+entities:
+- name: Property
+  root_schema: PropertyResponse
+  operations: [read_property_property__pid__get, search_property_property_search_get, autocomplete_address_address_autocomplete_get]
+  description: >-
+    The subject property. Returned as a fixed envelope of seven named sections rather than a
+    flat record; there is no field expansion, you always receive the whole composition.
+  sections: [address, assessment, usage, exterior, interior, other, sale]
+- name: PropertySearchResult
+  root_schema: PropertySearchResult
+  operations: [search_property_property_search_get]
+  description: Thin search projection — pid, jurisdiction, address, actual_use_type — backed by the stored procedure USP_SEARCH_SERVICE_PROPERTY.
+- name: AddressSuggestion
+  root_schema: AutocompleteResponse
+  operations: [autocomplete_address_address_autocomplete_get]
+  description: Address typeahead; suggestions[] plus count.
+- name: ValuationRange
+  root_schema: ValuationRangeResponse
+  operations: [read_valuation_range_valuationRange__pid__get, read_property_monthly_update_valuationRange__pid__updates_get]
+  description: Current AVM low/high band for a PID.
+- name: ValuationHistory
+  root_schema: ValuationHistoryResponse
+  operations: [read_valuation_history_valuationRange__pid__history_get]
+  description: Time series of ValuationHistoryPoint (snapshot_date, low_range_value, high_range_value).
+- name: LTVCheck
+  root_schema: LTVCheckResponse
+  operations: [run_ltv_check_valuation_ltv_check_post]
+  description: Stateless comparison of a proposed loan amount against the stored AVM value; has_avm plus avm_exceeds_ltv. Creates nothing.
+- name: NeighbourhoodSalesSeries
+  root_schema: NeighbourhoodSalesSeriesResponse
+  operations: [read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get]
+  description: Aggregated sales series for a neighbourhood + unit type, monthly or rolling three-month.
+- name: Comparables
+  root_schema: ComparablesResponse
+  operations: [read_comparables_comparables__pid__get]
+  description: Comparable properties for a PID; each ComparableProperty repeats the full Property section composition plus distance to the subject.
+- name: PropertyReportPdf
+  root_schema: PropertyReportPdfResponse
+  operations: [read_property_pdf_property__pid__report_pdf_get]
+  description: >-
+    Base64-encoded, password-protected PDF returned inside a JSON envelope, produced by the
+    legacy Landcor SOAP webservice after the PID is resolved to aa_code, j_code and roll_number.
+- name: AVMSummary
+  root_schema: LandcorAVMSummaryResponse
+  operations: [generate_avm_summary_generate_avm_summary_post]
+  description: >-
+    Narrative summary plus a ValidationResult. Inverted flow — the CALLER supplies the AVM data
+    as LandcorAVMSummaryRequest and the service only narrates it, so this is the one operation
+    whose input is the data model rather than an identifier.
+relationships:
+- from: PropertyResponse
+  to: PropertyAddressMetadata
+  type: has_one
+  via: address
+- from: PropertyResponse
+  to: BCAssessmentSection
+  type: has_one
+  via: assessment
+- from: PropertyResponse
+  to: PropertyUsageSection
+  type: has_one
+  via: usage
+- from: PropertyResponse
+  to: ExteriorDataSection
+  type: has_one
+  via: exterior
+- from: PropertyResponse
+  to: InteriorDataSection
+  type: has_one
+  via: interior
+- from: PropertyResponse
+  to: OtherSection
+  type: has_one
+  via: other
+- from: PropertyResponse
+  to: PropertySaleSection
+  type: has_one
+  via: sale
+- from: ComparablesResponse
+  to: ComparableProperty
+  type: has_many
+  via: comparables
+- from: ComparableProperty
+  to: PropertyAddressMetadata
+  type: has_one
+  via: address
+- from: ComparableProperty
+  to: BCAssessmentSection
+  type: has_one
+  via: assessment
+- from: ComparableProperty
+  to: PropertyUsageSection
+  type: has_one
+  via: usage
+- from: ComparableProperty
+  to: ExteriorDataSection
+  type: has_one
+  via: exterior
+- from: ComparableProperty
+  to: InteriorDataSection
+  type: has_one
+  via: interior
+- from: ComparableProperty
+  to: OtherSection
+  type: has_one
+  via: other
+- from: ComparableProperty
+  to: PropertySaleSection
+  type: has_one
+  via: sale
+- from: ValuationHistoryResponse
+  to: ValuationHistoryPoint
+  type: has_many
+  via: points
+- from: NeighbourhoodSalesSeriesResponse
+  to: NeighbourhoodSalesPoint
+  type: has_many
+  via: points
+- from: LandcorAVMSummaryRequest
+  to: SubjectProperty
+  type: has_one
+  via: subject_property
+- from: LandcorAVMSummaryRequest
+  to: ValuationMeta
+  type: has_one
+  via: valuation
+- from: LandcorAVMSummaryRequest
+  to: AssessmentYear
+  type: has_many
+  via: assessment_history
+- from: LandcorAVMSummaryRequest
+  to: ComparableSale
+  type: has_many
+  via: comparable_sales
+- from: LandcorAVMSummaryRequest
+  to: NeighbourhoodInsights
+  type: has_one
+  via: neighbourhood
+- from: LandcorAVMSummaryRequest
+  to: HistoricalSale
+  type: has_many
+  via: sales_history
+- from: LandcorAVMSummaryRequest
+  to: ValuationChange
+  type: has_one
+  via: valuation_change
+- from: LandcorAVMSummaryRequest
+  to: ClimateEvents
+  type: has_one
+  via: climate_events
+- from: LandcorAVMSummaryRequest
+  to: PermitHistory
+  type: has_one
+  via: permit_history
+- from: LandcorAVMSummaryRequest
+  to: NeighbourhoodScores
+  type: has_one
+  via: scores
+- from: LandcorAVMSummaryResponse
+  to: ValidationResult
+  type: has_one
+  via: validation
+- from: NeighbourhoodInsights
+  to: NeighbourhoodValueRange
+  type: has_one
+  via: value_range
+- from: ClimateEvents
+  to: ClimateEvent
+  type: has_many
+  via: events
+- from: PermitHistory
+  to: Permit
+  type: has_many
+  via: permits
+- from: HTTPValidationError
+  to: ValidationError
+  type: has_many
+  via: detail
+implicit_joins:
+- description: >-
+    Undeclared cross-operation dependency. The neighbourhood sales series requires
+    neighbourhood_code and unit_type_code as PATH parameters, but neither is obtainable from
+    that operation — they come from a prior read_property call
+    (BCAssessmentSection.neighbourhood_code and PropertyUsageSection.unit_type_code). Nothing in
+    the contract links them.
+  from: read_property_property__pid__get
+  to: read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get
+- description: >-
+    generate_avm_summary consumes shapes (SubjectProperty, ValuationMeta, ComparableSale) that
+    parallel but do NOT reuse the response schemas of read_property, read_valuation_range and
+    read_comparables. Field names differ (SubjectProperty.floor_area_sqft vs
+    InteriorDataSection.total_finished_area), so a caller must map between them by hand. This is
+    the single largest modelling gap in the API.
+  from: [read_property_property__pid__get, read_valuation_range_valuationRange__pid__get, read_comparables_comparables__pid__get]
+  to: generate_avm_summary_generate_avm_summary_post
+schema_reuse:
+  shared_sections: [PropertyAddressMetadata, BCAssessmentSection, PropertyUsageSection, ExteriorDataSection, InteriorDataSection, OtherSection, PropertySaleSection]
+  reused_by: [PropertyResponse, ComparableProperty]
+  detail: Seven section schemas are shared across the property and comparables surfaces — real components reuse, not copy-paste.
+  unreused: [SubjectProperty, ComparableSale, ValuationMeta, AssessmentYear, HistoricalSale, ValuationChange, ClimateEvents, ClimateEvent, PermitHistory, Permit, NeighbourhoodInsights, NeighbourhoodValueRange, NeighbourhoodScores]
+  unreused_detail: The AVM-summary input family is a parallel vocabulary for the same real-world facts, used by exactly one operation.

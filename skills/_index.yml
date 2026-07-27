@@ -1,0 +1,38 @@
+generated: '2026-07-26'
+method: generated
+source: >-
+  Generated from openapi/landcor-property-api-openapi.json plus the conventions, errors and
+  data-model artifacts in this repository. Landcor publishes no AGENTS.md, no skill files and no
+  developer documentation of any kind (searched landcor.com and the Landcor GitHub organization,
+  2026-07-26), so nothing could be harvested verbatim. Every operationId referenced below was
+  verified against the spec.
+note: >-
+  All three skills lead with the same access reality: the contract is anonymously readable but
+  every operation except GET /health requires a bearer token Landcor publishes no route to
+  obtain. An agent following these skills without a commercial arrangement will get 401s.
+skills:
+- file: landcor-value-a-property.md
+  name: Value a BC property with Landcor
+  api: openapi/landcor-property-api-openapi.json
+  operations:
+  - autocomplete_address_address_autocomplete_get
+  - search_property_property_search_get
+  - read_property_property__pid__get
+  - read_valuation_range_valuationRange__pid__get
+  - read_valuation_history_valuationRange__pid__history_get
+- file: landcor-mortgage-ltv-check.md
+  name: Run a Landcor loan-to-value check
+  api: openapi/landcor-property-api-openapi.json
+  operations:
+  - search_property_property_search_get
+  - read_valuation_range_valuationRange__pid__get
+  - run_ltv_check_valuation_ltv_check_post
+  - read_property_pdf_property__pid__report_pdf_get
+- file: landcor-comparables-and-market.md
+  name: Pull Landcor comparables and neighbourhood market context
+  api: openapi/landcor-property-api-openapi.json
+  operations:
+  - read_property_property__pid__get
+  - read_comparables_comparables__pid__get
+  - read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get
+  - generate_avm_summary_generate_avm_summary_post

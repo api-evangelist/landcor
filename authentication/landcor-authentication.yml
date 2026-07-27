@@ -1,0 +1,80 @@
+generated: '2026-07-26'
+method: derived
+source: openapi/landcor-property-api-openapi.json
+docs: https://api.landcor.com/docs
+docs_note: >-
+  The only "auth documentation" Landcor publishes is the Authorize dialog in the Swagger UI
+  render of its own spec. There is no auth page, no developer portal and no key-issuance route
+  anywhere on landcor.com — verified against the site's full Yoast sitemap index on 2026-07-26.
+  method stays `derived` because nothing was harvested from a docs page.
+summary:
+  types:
+  - http
+  http_schemes:
+  - bearer
+  api_key_in: []
+  oauth2_flows: []
+schemes:
+- name: HTTPBearer
+  type: http
+  scheme: bearer
+  bearer_format: null
+  header: 'Authorization: Bearer <token>'
+  sources:
+  - openapi/landcor-property-api-openapi.json
+  applies_to: 11 of 12 operations
+  unauthenticated_operations:
+  - health_check_health_get
+access:
+  issuance: not-published
+  self_serve: false
+  detail: >-
+    This is the defining finding for Landcor. The contract is anonymously readable — the OpenAPI,
+    Swagger UI and ReDoc all return HTTP 200 without credentials — but the token is not
+    obtainable through any published route. No developer portal, no API programme page, no key
+    request form, no partner page, no data-licensing page, no API pricing and no API terms exist
+    on landcor.com, and the marketing site never references api.landcor.com. The self-serve
+    account at https://store.landcor.com/user/user_add.aspx buys individual reports through the
+    web store; it is not an API credential. Access requires a direct commercial arrangement
+    (1-866-LANDCOR, https://www.landcor.com/contact/).
+  binding_terms: https://www.landcor.com/acceptable-use/
+evidence:
+- probe: GET https://api.landcor.com/property/search
+  date: '2026-07-26'
+  status: 401
+  body: '{"detail":"Missing token"}'
+  headers_observed: [Content-Length, Content-Type, Date, 'Server: uvicorn']
+  note: No WWW-Authenticate challenge header was returned, which RFC 6750 expects on a 401 from a bearer-protected resource.
+- probe: GET https://api.landcor.com/address/autocomplete?q=main
+  date: '2026-07-26'
+  status: 401
+  body: '{"detail":"Missing token"}'
+- probe: GET https://api.landcor.com/valuationRange/123456789
+  date: '2026-07-26'
+  status: 401
+  body: '{"detail":"Missing token"}'
+- probe: GET https://api.landcor.com/health
+  date: '2026-07-26'
+  status: 200
+  body: '{"status":"ok"}'
+  note: The single operation callable anonymously.
+- probe: GET https://api.landcor.com/.well-known/oauth-authorization-server
+  date: '2026-07-26'
+  status: 404
+  note: >-
+    Also 404 for /.well-known/oauth-protected-resource and /.well-known/openid-configuration —
+    the bearer token is opaque and out-of-band, with no discoverable issuer. See
+    well-known/landcor-well-known.yml.
+token_properties:
+  format: unpublished
+  expiry: unpublished
+  refresh: unpublished
+  scopes: none
+  scopes_detail: >-
+    No OAuth scheme and no scope surface, so scopes/ is intentionally absent — a single bearer
+    token carries whatever entitlement the commercial agreement grants, with nothing expressed in
+    the contract.
+cross_references:
+  conventions: conventions/landcor-conventions.yml
+  errors: errors/landcor-problem-types.yml
+  conformance: conformance/landcor-conformance.yml

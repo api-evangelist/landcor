@@ -1,0 +1,124 @@
+arazzo: 1.0.1
+info:
+  title: Landcor — address to valuation
+  summary: Resolve a BC street address to a Landcor PID, then pull property detail, the AVM valuation range and the valuation history.
+  version: 1.0.0
+  description: >-
+    Authored by API Evangelist from the live Landcor Property API OpenAPI 3.1.0 document. Every
+    operationId below was verified verbatim against
+    openapi/landcor-property-api-openapi.json. Note the access reality: every step here requires
+    an Authorization: Bearer token, and Landcor publishes no route to obtain one — anonymous
+    calls return HTTP 401 {"detail":"Missing token"}.
+sourceDescriptions:
+- name: landcor
+  url: ../openapi/landcor-property-api-openapi.json
+  type: openapi
+workflows:
+- workflowId: address-to-valuation
+  summary: Address string in, AVM valuation range and history out.
+  description: >-
+    Landcor keys everything on its own PID (xxx-xxx-xxx), which callers never start with, so the
+    first two steps exist purely to resolve one. Step 3 also captures neighbourhood_code and
+    unit_type_code, which the neighbourhood sales series needs and offers no other way to get.
+  inputs:
+    type: object
+    required: [street_name]
+    properties:
+      street_name:
+        type: string
+        description: Street name to search on, e.g. "Sixth".
+      street_number:
+        type: string
+        description: Street number, e.g. "313".
+      postal_code:
+        type: string
+        description: BC postal code, e.g. "V3L 3A7".
+      unit_number:
+        type: string
+      street_direction:
+        type: string
+  steps:
+  - stepId: search-property
+    description: >-
+      Search by address filters. All five filters are optional in the contract, so at minimum
+      supply street_name plus street_number or postal_code — an unfiltered call is legal and
+      returns an unbounded array with no pagination.
+    operationId: search_property_property_search_get
+    parameters:
+    - name: street_name
+      in: query
+      value: $inputs.street_name
+    - name: street_number
+      in: query
+      value: $inputs.street_number
+    - name: postal_code
+      in: query
+      value: $inputs.postal_code
+    - name: unit_number
+      in: query
+      value: $inputs.unit_number
+    - name: street_direction
+      in: query
+      value: $inputs.street_direction
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.length() > 0
+      type: jsonpath
+    outputs:
+      pid: $response.body#/0/pid
+      matched_address: $response.body#/0/address
+      jurisdiction: $response.body#/0/jurisdiction
+      actual_use_type: $response.body#/0/actual_use_type
+  - stepId: read-property
+    description: >-
+      Full property detail. The response is a fixed composition of seven sections — there is no
+      expand or fields parameter, you always receive all of it.
+    operationId: read_property_property__pid__get
+    parameters:
+    - name: pid
+      in: path
+      value: $steps.search-property.outputs.pid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      pid: $response.body#/pid
+      neighbourhood_code: $response.body#/assessment/neighbourhood_code
+      unit_type_code: $response.body#/usage/unit_type_code
+      last_total_value_amount: $response.body#/assessment/last_total_value_amount
+      year_built: $response.body#/exterior/year_built
+      last_sale_price: $response.body#/sale/sale_price
+  - stepId: read-valuation-range
+    description: >-
+      Current AVM low/high band. Use this operation, not GET /valuationRange/{pid}/updates — the
+      spec states the updates endpoint now mirrors this one and returns the identical payload.
+      Raises an undeclared 404 when no valuation record exists for the PID.
+    operationId: read_valuation_range_valuationRange__pid__get
+    parameters:
+    - name: pid
+      in: path
+      value: $steps.read-property.outputs.pid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      low_range_value: $response.body#/low_range_value
+      high_range_value: $response.body#/high_range_value
+  - stepId: read-valuation-history
+    description: Chronological valuation snapshots. Also raises an undeclared 404 when no history exists.
+    operationId: read_valuation_history_valuationRange__pid__history_get
+    parameters:
+    - name: pid
+      in: path
+      value: $steps.read-property.outputs.pid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      points: $response.body#/points
+  outputs:
+    pid: $steps.read-property.outputs.pid
+    address: $steps.search-property.outputs.matched_address
+    neighbourhood_code: $steps.read-property.outputs.neighbourhood_code
+    unit_type_code: $steps.read-property.outputs.unit_type_code
+    valuation_low: $steps.read-valuation-range.outputs.low_range_value
+    valuation_high: $steps.read-valuation-range.outputs.high_range_value
+    valuation_history: $steps.read-valuation-history.outputs.points

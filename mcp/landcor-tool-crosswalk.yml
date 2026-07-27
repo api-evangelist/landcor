@@ -1,0 +1,117 @@
+generated: '2026-07-26'
+method: derived
+source: >-
+  Derived by binding every candidate MCP tool in mcp/landcor-mcp.yml to its backing REST
+  operationId in openapi/landcor-property-api-openapi.json (OpenAPI 3.1.0, twelve
+  operations). Every operationId was grepped against the spec before it was written here.
+purpose: >-
+  Make the agent-facing tool a first-class discovery unit bound to the machine-readable
+  core, so each tool inherits a REAL inputSchema (the operation's parameters and
+  requestBody) instead of a guessed one. Landcor is the simple case: there is exactly one
+  surface — REST — so the crosswalk is 1:1 with no MCP-only or REST-only divergence. It is
+  recorded anyway because it is the contract a future Landcor MCP server would implement,
+  and because the 1:1 result is itself the finding.
+surfaces:
+  rest_openapi: openapi/landcor-property-api-openapi.json   # live at https://api.landcor.com/openapi.json, anonymous, 12 operations, 37 schemas
+  graphql: null                                             # no GraphQL surface; https://api.landcor.com/graphql returns 404
+  mcp: null                                                 # no hosted MCP server; https://api.landcor.com/mcp returns 404; tools are CANDIDATE only
+  gating: >-
+    The REST contract is anonymously readable but every operation except /health is gated by
+    a single HTTPBearer scheme with no published issuance route. Tool input schemas are
+    therefore fully known; tool EXECUTION is not obtainable without a commercial arrangement.
+crosswalk:
+- tool: health_check
+  category: health
+  rest: [health_check_health_get]
+  binding: rest
+  confidence: high
+  note: Only unauthenticated operation. Returns {"status":"ok"} (verified live 2026-07-26).
+- tool: search_property
+  category: property
+  rest: [search_property_property_search_get]
+  binding: rest
+  confidence: high
+  note: >-
+    inputSchema is the five optional query filters unit_number, street_direction,
+    street_number, street_name, postal_code. No filter is required, so an unfiltered call is
+    syntactically valid — a real agent hazard the spec does not constrain.
+- tool: read_property
+  category: property
+  rest: [read_property_property__pid__get]
+  binding: rest
+  confidence: high
+  note: 'inputSchema: path pid, string, pattern ^\d{3}-\d{3}-\d{3}$.'
+- tool: read_property_pdf
+  category: property
+  rest: [read_property_pdf_property__pid__report_pdf_get]
+  binding: rest
+  confidence: high
+  note: >-
+    Backed server-side by a legacy Landcor SOAP webservice per the spec's own description;
+    returns a base64-encoded, password-protected PDF, so the tool output is not agent-readable
+    without the report password.
+- tool: autocomplete_address
+  category: property
+  rest: [autocomplete_address_address_autocomplete_get]
+  binding: rest
+  confidence: high
+  note: 'inputSchema: q (required, 3..200 chars) and limit (1..50, default documented in spec).'
+- tool: read_valuation_range
+  category: valuation
+  rest: [read_valuation_range_valuationRange__pid__get]
+  binding: rest
+  confidence: high
+- tool: read_property_monthly_update
+  category: valuation
+  rest: [read_property_monthly_update_valuationRange__pid__updates_get]
+  binding: rest
+  confidence: high
+  note: >-
+    Legacy alias. The spec states the endpoint "now mirrors" the valuation range endpoint and
+    returns the identical ValuationRangeResponse — a de facto deprecated operation that carries
+    no deprecated flag. An MCP server should expose only one of the two.
+- tool: read_valuation_history
+  category: valuation
+  rest: [read_valuation_history_valuationRange__pid__history_get]
+  binding: rest
+  confidence: high
+- tool: run_ltv_check
+  category: valuation
+  rest: [run_ltv_check_valuation_ltv_check_post]
+  binding: rest
+  confidence: high
+  note: 'inputSchema is the LTVCheckRequest body: pid + ltv_amount. Read-only computation despite POST.'
+- tool: read_neighbourhood_sales_series
+  category: valuation
+  rest: [read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get]
+  binding: rest
+  confidence: high
+  note: >-
+    inputSchema: path neighbourhood_code + unit_type_code, query interval (enum monthly |
+    rolling3m), months (>=1), snapshot_day (1..31). Neighbourhood and unit type codes come from
+    BCAssessmentSection.neighbourhood_code and PropertyUsageSection.unit_type_code on a prior
+    read_property call — an undeclared cross-operation dependency an agent must know.
+- tool: read_comparables
+  category: comparables
+  rest: [read_comparables_comparables__pid__get]
+  binding: rest
+  confidence: high
+- tool: generate_avm_summary
+  category: avm-summary
+  rest: [generate_avm_summary_generate_avm_summary_post]
+  binding: rest
+  confidence: high
+  note: >-
+    The heaviest input in the API: LandcorAVMSummaryRequest composes ten sub-schemas
+    (SubjectProperty, ValuationMeta, AssessmentYear[], ComparableSale[], NeighbourhoodInsights,
+    HistoricalSale[], ValuationChange, ClimateEvents, PermitHistory, NeighbourhoodScores). The
+    caller supplies the AVM data; the service only narrates it.
+mcp_only: []
+rest_only: []
+coverage:
+  tools_named: 12
+  tools_bound: 12
+  mcp_only: 0
+  rest_operations_total: 12
+  rest_operations_with_tool: 12
+  binding_rate: '100%'

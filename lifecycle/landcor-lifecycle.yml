@@ -1,0 +1,72 @@
+generated: '2026-07-26'
+method: derived
+source: >-
+  openapi/landcor-property-api-openapi.json plus live probes on 2026-07-26 for a status page,
+  changelog, roadmap and deprecation policy. Landcor publishes no developer documentation, so
+  no lifecycle policy could be searched — the negative results below were each verified.
+versioning:
+  scheme: none
+  current: '0.1.0'
+  in_path: false
+  in_header: false
+  docs: null
+  detail: >-
+    No version segment in any route and no version negotiation header. info.version in the
+    OpenAPI document reads 0.1.0 — the FastAPI default — on a service that is live in
+    production, so the declared version conveys no stability commitment. There is no published
+    statement of what a breaking change would look like or how clients would be told.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: unknown
+  detail: >-
+    No deprecation policy, no RFC 8594 Sunset/Deprecation header observed, and no operation in
+    the spec carries deprecated: true. There is nevertheless one de facto deprecated operation
+    (below), documented only in prose, which is exactly the failure mode a deprecation policy
+    exists to prevent.
+deprecated_operations: []
+soft_deprecated_operations:
+- operation: openapi/landcor-property-api-openapi.json#read_property_monthly_update_valuationRange__pid__updates_get
+  path: GET /valuationRange/{pid}/updates
+  evidence: >-
+    The spec's own description states "Historically this endpoint exposed multiple update
+    strategies. The functionality now mirrors get_property_valuation_range so that clients
+    receive the same data as the valuation range endpoint."
+  status: >-
+    Functionally superseded by GET /valuationRange/{pid}; returns the identical
+    ValuationRangeResponse. Not flagged deprecated in the contract, so tooling cannot see it.
+sla:
+  url: null
+  uptime_target: null
+  detail: No SLA, uptime target or support-response commitment is published.
+status_page:
+  url: null
+  detail: >-
+    None. status.landcor.com does not resolve, https://www.landcor.com/status/ returns 404, and
+    https://landcor.statuspage.io redirects to Atlassian's Statuspage marketing page rather than
+    a Landcor-owned status page (all verified 2026-07-26). No StatusPage pointer is emitted in
+    apis.yml because no status page exists.
+  health_endpoint: >-
+    The nearest thing Landcor operates is the API's own GET /health, which is unauthenticated
+    and returned {"status":"ok"} on 2026-07-26 — a liveness probe for load balancers, not a
+    customer-facing status communication channel.
+changelog:
+  url: null
+  detail: >-
+    No changelog or release notes. https://www.landcor.com/changelog/ returns 404 and no
+    equivalent page appears in the site's Yoast sitemap index (enumerated in full 2026-07-26).
+    The company news feed at https://www.landcor.com/about-us/landcor-news/ is press coverage,
+    not product release notes. No ChangeLog pointer is emitted.
+roadmap:
+  url: null
+  detail: 'None. https://www.landcor.com/roadmap/ returns 404 and no roadmap page exists in the sitemap.'
+support:
+  url: https://www.landcor.com/support/
+  contact: https://www.landcor.com/contact/
+  phone: 1-866-LANDCOR (1-866-526-3267)
+  detail: General customer support for report buyers; there is no developer support channel.
+infrastructure:
+  observed: >-
+    Server: uvicorn on api.landcor.com (FastAPI). The review recorded the host as running on
+    Azure App Service in Canada Central. TLS 1.3, certificate valid to 2026-12-11; no HSTS.
+    See security/landcor-domain-security.yml.

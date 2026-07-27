@@ -1,0 +1,115 @@
+generated: '2026-07-26'
+method: derived
+source: >-
+  openapi/landcor-property-api-openapi.json plus live response-header inspection of
+  api.landcor.com on 2026-07-26. Landcor publishes no developer documentation, so nothing here
+  could be searched from a docs site — every convention below is read off the contract or off
+  the wire.
+summary: >-
+  The Landcor Property API is a small, read-oriented FastAPI service with the conventions
+  FastAPI gives it by default and nothing beyond them. There is no idempotency contract, no
+  pagination contract, no request-id tracing, no API versioning in the URL or in a header, no
+  rate-limit signalling, and no field-expansion or sparse-fieldset mechanism. That is recorded
+  as fact, not as criticism: eleven of twelve operations are reads, and the twelfth
+  (generate-avm-summary) is a stateless computation over a caller-supplied payload.
+authentication:
+  style: http-bearer
+  header: 'Authorization: Bearer <token>'
+  scheme_name: HTTPBearer
+  applies_to: all operations except health_check_health_get
+  anonymous_response: 'HTTP 401 {"detail":"Missing token"}'
+  key_issuance: not published
+  detail: authentication/landcor-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  detail: >-
+    No Idempotency-Key header, parameter or documented retry-safety contract anywhere in the
+    spec. The two POST operations are both effectively read-only computations rather than
+    resource creators: run_ltv_check compares a supplied loan amount against the stored AVM
+    value and creates nothing, and generate_avm_summary narrates a caller-supplied AVM payload.
+    Replaying either is therefore harmless in practice, but that is an artifact of the design,
+    not a published guarantee. No Idempotency pointer is emitted in apis.yml because no
+    idempotency contract exists.
+pagination:
+  supported: false
+  style: none
+  detail: >-
+    No cursor, offset, page or next-link convention. Collection responses are unbounded arrays:
+    search_property returns a bare array of PropertySearchResult, ComparablesResponse.comparables,
+    ValuationHistoryResponse.points and NeighbourhoodSalesSeriesResponse.points are all
+    unbounded lists. The only result-count control in the whole API is autocomplete's `limit`
+    (1..50), and AutocompleteResponse carries a `count` field. Response size for the other
+    collections is whatever the underlying stored procedure returns.
+filtering:
+  detail: >-
+    search_property takes five optional address filters (unit_number, street_direction,
+    street_number, street_name, postal_code) forwarded to the stored procedure
+    USP_SEARCH_SERVICE_PROPERTY, named in the spec's own operation description. None is
+    required, so an unfiltered search is syntactically valid.
+  neighbourhood_series:
+    interval: enum monthly | rolling3m
+    months: integer >= 1
+    snapshot_day: integer 1..31
+field_expansion:
+  supported: false
+  detail: >-
+    No expand / include / fields parameter. Property detail is returned pre-composed as a fixed
+    envelope of named sections (address, assessment, usage, exterior, interior, other, sale),
+    which is the API's substitute for expansion — you always get all of it.
+identifiers:
+  primary: Landcor PID
+  format: ^\d{3}-\d{3}-\d{3}$
+  detail: >-
+    Every property-scoped operation is keyed on the Landcor PID in xxx-xxx-xxx form, enforced by
+    a regex pattern in the spec. This is Landcor's own identifier, not the RESO Universal
+    Property Identifier (see conformance/landcor-conformance.yml). Secondary identifiers that
+    appear in responses and are required as inputs elsewhere: neighbourhood_code and
+    unit_type_code (from BCAssessmentSection / PropertyUsageSection), and aa_code / j_code /
+    roll_number (BC Assessment area, jurisdiction and roll number, surfaced on the PDF report
+    response).
+metadata:
+  supported: false
+  detail: No customer-defined metadata surface; the API is read-only over Landcor's own data.
+request_tracing:
+  request_id_header: none observed
+  detail: >-
+    No X-Request-Id, X-Correlation-Id or traceparent in observed responses. Observed response
+    headers on api.landcor.com are only Content-Length, Content-Type, Date and Server (uvicorn),
+    which also discloses the stack.
+versioning:
+  scheme: none
+  in_path: false
+  in_header: false
+  spec_version: 0.1.0
+  detail: >-
+    Routes carry no version segment (/property/{pid}, not /v1/property/{pid}) and no version
+    header is accepted. The only version marker is info.version 0.1.0 in the OpenAPI document
+    itself — a pre-1.0 marker on a service that is in production use. See
+    lifecycle/landcor-lifecycle.yml.
+errors:
+  envelope: '{"detail": string | ValidationError[]}'
+  rfc9457: false
+  catalog: errors/landcor-problem-types.yml
+rate_limiting:
+  documented: false
+  headers_observed: none
+  detail: >-
+    No X-RateLimit-* or RateLimit-* headers observed, no 429 declared or documented, and no
+    published quota. Commercial volume control is contractual instead: the Acceptable Use policy
+    at https://www.landcor.com/acceptable-use/ obliges users "not to stockpile data pulls" and
+    "to not share licenses among offices or to share data pulls among various users" — per-seat
+    terms enforced by agreement rather than by the API.
+content_negotiation:
+  request: application/json (POST bodies)
+  response: application/json
+  detail: >-
+    Everything is JSON, including the PDF report: read_property_pdf returns a JSON envelope with
+    a base64-encoded, password-protected PDF in the encrypted_pdf field rather than an
+    application/pdf body.
+cross_references:
+  authentication: authentication/landcor-authentication.yml
+  errors: errors/landcor-problem-types.yml
+  lifecycle: lifecycle/landcor-lifecycle.yml
+  conformance: conformance/landcor-conformance.yml
+  data_model: data-model/landcor-data-model.yml

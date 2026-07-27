@@ -1,0 +1,27 @@
+generated: '2026-07-26'
+method: generated
+source: openapi/landcor-property-api-openapi.json
+note: >-
+  Native Arazzo 1.0.1 workflows stitching Landcor's own operations into real multi-step use
+  cases. sourceDescriptions use the relative path ../openapi/landcor-property-api-openapi.json
+  and every step operationId was grepped against that spec before it was written. No sandbox or
+  test PIDs exist to seed example inputs — Landcor publishes no test environment — so inputs are
+  described rather than pre-filled.
+workflows:
+- file: landcor-address-to-valuation.yml
+  workflowId: address-to-valuation
+  title: Landcor — address to valuation
+  summary: Resolve a BC street address to a Landcor PID, then pull property detail, the AVM valuation range and the valuation history.
+  operations:
+  - search_property_property_search_get
+  - read_property_property__pid__get
+  - read_valuation_range_valuationRange__pid__get
+  - read_valuation_history_valuationRange__pid__history_get
+- file: landcor-ltv-check-and-report.yml
+  workflowId: ltv-check-and-report
+  title: Landcor — loan-to-value check and valuation report
+  summary: Run a proposed mortgage amount against the AVM value for a BC property and retrieve the password-protected PDF valuation report.
+  operations:
+  - read_valuation_range_valuationRange__pid__get
+  - run_ltv_check_valuation_ltv_check_post
+  - read_property_pdf_property__pid__report_pdf_get

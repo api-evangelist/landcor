@@ -1,0 +1,68 @@
+generated: '2026-07-26'
+method: probed
+source: live HTTP probes of the Landcor API host and web hosts, 2026-07-26
+note: >-
+  Landcor publishes no /.well-known/ discovery documents on any host. Every probe returned
+  404, including on api.landcor.com, which does serve a live OpenAPI 3.1.0 document at
+  /openapi.json. The FastAPI service exposes the spec and its Swagger UI / ReDoc renders but
+  no discovery layer around them: no security.txt, no OAuth or OIDC metadata (consistent with
+  the single HTTPBearer scheme, which is an opaque token with no published issuer), no
+  api-catalog and no ai-plugin. This is an honest negative result, not an incomplete probe.
+  No llms.txt is published either, so llms/landcor-llms.txt is GENERATED from this catalog
+  rather than harvested.
+hosts:
+- host: https://api.landcor.com
+  documents:
+  - path: /.well-known/security.txt          # RFC 9116
+    status: 404
+  - path: /.well-known/openid-configuration  # OIDC discovery
+    status: 404
+  - path: /.well-known/oauth-authorization-server  # RFC 8414
+    status: 404
+  - path: /.well-known/oauth-protected-resource    # RFC 9728
+    status: 404
+  - path: /.well-known/api-catalog           # RFC 9727
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /openapi.json
+    status: 200
+    file: ../openapi/landcor-property-api-openapi.json
+    note: >-
+      Not a /.well-known/ path, but this is Landcor's only machine-readable discovery
+      document. Anonymously readable, 47,840 bytes, byte-identical to the copy harvested
+      into openapi/ on 2026-07-26 (md5 b94aa20c4cabc3cdd74af95b2d4b49f4).
+  - path: /docs
+    status: 200
+    note: Swagger UI render of the same document.
+  - path: /redoc
+    status: 200
+    note: ReDoc render of the same document.
+- host: https://www.landcor.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+    note: 'Yoast-generated, Disallow empty; points at https://www.landcor.com/sitemap_index.xml'
+  - path: /sitemap.xml
+    status: 200
+    note: >-
+      Yoast sitemap index. Enumerated in full on 2026-07-26 — no developer, API, partner or
+      data-licensing page exists anywhere in it, confirming the review's access-gate finding.
+- host: https://landcor.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+- host: https://store.landcor.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404

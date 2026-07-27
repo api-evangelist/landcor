@@ -92,6 +92,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/landcor-property-api-openapi.json
+  - type: Overlay
+    url: overlays/landcor-property-api-overlay.yaml
   - type: Documentation
     url: https://api.landcor.com/docs
   - type: APIReference
@@ -99,6 +101,44 @@ apis:
   - type: Authentication
     url: https://api.landcor.com/docs
 common:
+- type: AgenticAccess
+  url: agentic-access/landcor-agentic-access.yml
+- type: DomainSecurity
+  url: security/landcor-domain-security.yml
+- type: Authentication
+  url: authentication/landcor-authentication.yml
+- type: Documentation
+  url: https://api.landcor.com/docs
+- type: APIReference
+  url: https://api.landcor.com/redoc
+- type: Conventions
+  url: conventions/landcor-conventions.yml
+- type: ErrorCatalog
+  url: errors/landcor-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/landcor-lifecycle.yml
+- type: Conformance
+  url: conformance/landcor-conformance.yml
+- type: DataModel
+  url: data-model/landcor-data-model.yml
+- type: MCPServer
+  url: mcp/landcor-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/landcor-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Arazzo
+  name: Landcor — address to valuation
+  url: arazzo/landcor-address-to-valuation.yml
+- type: Arazzo
+  name: Landcor — loan-to-value check and valuation report
+  url: arazzo/landcor-ltv-check-and-report.yml
+- type: LLMsTxt
+  url: llms/landcor-llms.txt
+- type: Overlay
+  url: overlays/landcor-property-api-overlay.yaml
+- type: WellKnownProbe
+  url: well-known/landcor-well-known.yml
 - type: Website
   url: https://www.landcor.com/
 - type: Products

@@ -1,0 +1,108 @@
+generated: '2026-07-26'
+method: derived
+source: >-
+  openapi/landcor-property-api-openapi.json, live probes of api.landcor.com and
+  www.landcor.com on 2026-07-26, and the RESO Canadian membership roster at
+  https://www.reso.org/canadian-membership/ (recorded in review.yml).
+note: >-
+  Assertions about cross-cutting and industry standards. This file is DERIVED — Landcor
+  publishes no compliance page, no certification claim and no trust center, so no Compliance
+  pointer is emitted in apis.yml. Absence is recorded as false with the evidence that makes it
+  a finding rather than a gap in probing.
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    Valid OpenAPI 3.1.0 document served anonymously at https://api.landcor.com/openapi.json
+    (HTTP 200, 47,840 bytes, fetched 2026-07-26 and byte-identical to the copy in openapi/).
+    Twelve operations, 37 component schemas, every operation carrying a unique operationId.
+- id: json
+  conforms: true
+  evidence: All requests and responses are application/json.
+- id: http-bearer-rfc6750
+  conforms: partial
+  evidence: >-
+    A single HTTPBearer securityScheme is declared and applied to eleven of twelve operations,
+    and anonymous calls return HTTP 401. The 401 responses observed carried no
+    WWW-Authenticate challenge header, which RFC 6750 expects, and no token format, issuer or
+    issuance route is published.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in the spec; /.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource both 404. Bearer tokens here are opaque and
+    out-of-band.
+- id: openid-connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every Landcor host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the FastAPI {"detail": ...} envelope as application/json, not
+    application/problem+json. See errors/landcor-problem-types.yml.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on api.landcor.com, www.landcor.com, landcor.com and store.landcor.com.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header support and no deprecation policy published.
+- id: json-api
+  conforms: false
+  evidence: Plain JSON envelopes; no JSON:API document structure, media type or links object.
+- id: odata
+  conforms: false
+  evidence: >-
+    https://api.landcor.com/$metadata and https://api.landcor.com/odata/$metadata both return
+    HTTP 404 {"detail":"Not Found"}; no OData query options are accepted.
+- id: reso-web-api
+  conforms: false
+  evidence: >-
+    Landcor is not among the nineteen Canadian organizations on RESO's published Canadian
+    membership roster, holds no RESO Web API certification, exposes no OData service document
+    and uses its own PID rather than the RESO Universal Property Identifier. Structurally
+    expected: RESO certification follows NAR Policy Statement 7.90 and applies to US MLSs, and
+    Landcor is a valuation and public-record reseller rather than a listings company. See
+    review.yml sectorPosture.
+- id: reso-data-dictionary
+  conforms: false
+  evidence: No Data Dictionary version claimed; field names are Landcor/BC Assessment vernacular (roll_number, actual_use_type, alr, coop).
+- id: reso-upi
+  conforms: false
+  evidence: 'Identifier is the Landcor PID, pattern ^\d{3}-\d{3}-\d{3}$, documented in the spec as "Property identifier in format xxx-xxx-xxx".'
+- id: idempotency-keys
+  conforms: false
+  evidence: No Idempotency-Key header or parameter anywhere in the spec.
+- id: pagination
+  conforms: false
+  evidence: No cursor/offset/page convention; collections are unbounded arrays. Only autocomplete has a limit.
+- id: rate-limit-headers
+  conforms: false
+  evidence: No RateLimit-* or X-RateLimit-* headers observed and no 429 declared.
+- id: hsts
+  conforms: false
+  evidence: 'No Strict-Transport-Security header on www.landcor.com; none observed on api.landcor.com. See security/landcor-domain-security.yml.'
+- id: dnssec
+  conforms: false
+  evidence: landcor.com is not DNSSEC-signed and publishes no CAA records.
+- id: dmarc
+  conforms: partial
+  evidence: 'SPF and DMARC records are published for landcor.com, but the DMARC policy is p=none (monitor only).'
+compliance_program:
+  published: false
+  certifications: []
+  trust_center: null
+  detail: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP or CSA STAR claim appears anywhere on
+    landcor.com, and no trust center exists (trust.landcor.com does not resolve; the probe in
+    0-working/probe-security-programs.py returned no hit on 2026-07-26). What Landcor does
+    publish is a 1990s-vintage website Security Policy at
+    https://www.landcor.com/security-policy/ describing SSL, encrypted storage, office access
+    control and password-protected screensavers — a data-handling statement for retail report
+    buyers, not an API security posture and not a vulnerability disclosure program. Landcor's
+    real compliance surface is upstream and contractual: the data is licensed from BC
+    Assessment, the Land Title and Survey Authority, BC Registry Services and the Integrated
+    Cadastral Information Society (ICIS), and the Acceptable Use policy passes those licence
+    terms through to the customer.

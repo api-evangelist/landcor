@@ -1,0 +1,106 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Landcor Property API
+  version: 1.0.0
+x-generated: '2026-07-26'
+x-method: generated
+x-source: >-
+  Generated from openapi/landcor-property-api-openapi.json and the artifacts derived alongside
+  it in this repository. Captures API Evangelist's enhancements as an Overlay so the harvested
+  contract is never mutated. Every statement below is grounded in the spec text, in a live
+  probe on 2026-07-26, or in an artifact in this repo.
+extends: openapi/landcor-property-api-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: landcor
+    x-apievangelist-harvested: '2026-07-26'
+    x-apievangelist-source-url: https://api.landcor.com/openapi.json
+    x-apievangelist-access: >-
+      Contract is public and anonymously readable; credentials are not. Every operation except
+      GET /health returns HTTP 401 {"detail":"Missing token"} and no token issuance route is
+      published anywhere on landcor.com. Access requires a direct commercial arrangement.
+    x-apievangelist-artifacts:
+      authentication: authentication/landcor-authentication.yml
+      conventions: conventions/landcor-conventions.yml
+      errors: errors/landcor-problem-types.yml
+      lifecycle: lifecycle/landcor-lifecycle.yml
+      conformance: conformance/landcor-conformance.yml
+      data_model: data-model/landcor-data-model.yml
+      mcp: mcp/landcor-mcp.yml
+      crosswalk: mcp/landcor-tool-crosswalk.yml
+      skills: skills/_index.yml
+- target: $.info
+  update:
+    description: >-
+      Landcor Property API — twelve read-oriented operations over British Columbia residential
+      property data: address search and autocomplete, full property detail keyed on the Landcor
+      PID, a password-protected PDF report, AVM valuation range, history and loan-to-value
+      check, neighbourhood sales series, comparables, and a narrative AVM summary generator.
+      Data originates from BC Assessment, the Land Title and Survey Authority, BC Registry
+      Services and ICIS, licensed to Landcor and resold. Added by API Evangelist; the harvested
+      document carries no info.description.
+- target: $
+  update:
+    servers:
+    - url: https://api.landcor.com
+      description: >-
+        Production. Added by API Evangelist — the harvested document declares no servers[] at
+        all, so a generated client has no base URL. Verified live 2026-07-26.
+- target: $
+  update:
+    tags:
+    - name: Health
+      description: Unauthenticated liveness probe.
+    - name: Property
+      description: Property search, detail, address autocomplete and the PDF report.
+    - name: Valuation
+      description: AVM valuation range, history, loan-to-value check and neighbourhood sales series.
+    - name: Comparables
+      description: Comparable properties for a subject PID.
+    - name: AVM Summary
+      description: Narrative summary generated from a caller-supplied AVM payload.
+  x-note: >-
+    The harvested document declares tags: [] while every operation carries tag names, so the tag
+    objects are undescribed. These five descriptions are added by API Evangelist.
+- target: $.components.securitySchemes.HTTPBearer
+  update:
+    description: >-
+      Opaque bearer token. Landcor publishes no issuance route, no token format, no expiry and
+      no refresh mechanism; tokens are obtained through a commercial arrangement. Anonymous
+      calls return 401 {"detail":"Missing token"} with no WWW-Authenticate challenge.
+- target: $.paths['/valuationRange/{pid}/updates'].get
+  update:
+    x-apievangelist-deprecation-advice: >-
+      Functionally superseded. The operation's own description states it "now mirrors"
+      GET /valuationRange/{pid} and returns the identical ValuationRangeResponse, but it carries
+      no deprecated flag, so tooling cannot see it. Prefer GET /valuationRange/{pid}.
+- target: $.paths['/property/{pid}/report/pdf'].get
+  update:
+    x-apievangelist-note: >-
+      Returns a JSON envelope containing a base64-encoded, PASSWORD-PROTECTED PDF, not an
+      application/pdf body. The password is not supplied by the API. Backed by a legacy Landcor
+      SOAP webservice; the spec documents a 502 on upstream failure and a 404 on unresolvable
+      PID, neither of which is declared as a response object.
+- target: $.paths['/property/search'].get
+  update:
+    x-apievangelist-note: >-
+      All five address filters are optional, so an unfiltered search is syntactically valid. The
+      operation forwards to the stored procedure USP_SEARCH_SERVICE_PROPERTY, named in the spec's
+      own description. Results are an unbounded array with no pagination.
+- target: $.paths['/valuation/neighbourhood/{neighbourhood_code}/{unit_type_code}/sales'].get
+  update:
+    x-apievangelist-note: >-
+      neighbourhood_code and unit_type_code are not obtainable from this operation. Call
+      GET /property/{pid} first and read assessment.neighbourhood_code and
+      usage.unit_type_code. The contract does not express this dependency.
+- target: $.paths['/generate-avm-summary'].post
+  update:
+    x-apievangelist-note: >-
+      Inverted flow — the caller supplies the AVM data as LandcorAVMSummaryRequest and the
+      service narrates it. Its input vocabulary (SubjectProperty, ValuationMeta, ComparableSale)
+      parallels but does not reuse the response schemas of GET /property/{pid},
+      GET /valuationRange/{pid} and GET /comparables/{pid}, so callers must map fields by hand.
+- target: $.paths['/health'].get
+  update:
+    x-apievangelist-note: The only operation callable without a token; returned {"status":"ok"} on 2026-07-26.

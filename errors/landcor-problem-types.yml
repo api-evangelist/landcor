@@ -1,0 +1,87 @@
+generated: '2026-07-26'
+method: derived
+source: >-
+  openapi/landcor-property-api-openapi.json (declared responses + the prose in each
+  operation's "Business Rules" description block), plus live anonymous probes of
+  api.landcor.com on 2026-07-26.
+format: fastapi-detail
+rfc9457: false
+note: >-
+  Landcor does not use RFC 9457 problem+json. Every error is the stock FastAPI envelope,
+  {"detail": ...}, served as application/json. The envelope is polymorphic: `detail` is a
+  human string for HTTP errors raised by the application (401, 404, 502) and an ARRAY of
+  ValidationError objects (loc / msg / type) for 422 request-validation failures. There is no
+  machine-readable error code, no error type URI, and no documented error reference page —
+  landcor.com publishes no developer documentation at all. The 404 and 502 conditions below
+  are declared only in prose inside the OpenAPI operation descriptions; they are NOT declared
+  as response objects in the spec, so a generated client will not know about them. That gap is
+  recorded here as the finding, not papered over.
+envelope:
+  media_type: application/json
+  field: detail
+  shapes:
+  - when: application error (401, 404, 502)
+    type: string
+    example: '{"detail":"Missing token"}'
+  - when: request validation error (422)
+    type: array
+    schema: HTTPValidationError -> detail[] of ValidationError {loc, msg, type}
+problems:
+- status: 401
+  title: Missing token
+  detail_example: '{"detail":"Missing token"}'
+  declared_in_spec: false
+  evidence: >-
+    Live anonymous GET https://api.landcor.com/property/search returned HTTP 401 with body
+    {"detail":"Missing token"} and Server: uvicorn (verified 2026-07-26). Also reproduced
+    against /address/autocomplete and /valuationRange/{pid} during the 2026-07-26 review.
+  applies_to: every operation except health_check_health_get
+  remediation: >-
+    Send Authorization: Bearer <token>. No public route to obtain a token exists; credentials
+    come from a direct commercial arrangement with Landcor (1-866-LANDCOR or
+    https://www.landcor.com/contact/).
+- status: 404
+  title: Resource not found
+  declared_in_spec: false
+  evidence: >-
+    Stated in the operation descriptions: "A 404 error is raised if no valuation record exists
+    for the PID" (read_valuation_range_valuationRange__pid__get), "A 404 error is raised if no
+    valuation history exists for the PID"
+    (read_valuation_history_valuationRange__pid__history_get), and "A 404 error is returned when
+    the PID cannot be resolved" (read_property_pdf_property__pid__report_pdf_get). Unknown routes
+    also return {"detail":"Not Found"} — verified 2026-07-26 against /$metadata and
+    /odata/$metadata.
+  source_operations:
+  - openapi/landcor-property-api-openapi.json#read_valuation_range_valuationRange__pid__get
+  - openapi/landcor-property-api-openapi.json#read_valuation_history_valuationRange__pid__history_get
+  - openapi/landcor-property-api-openapi.json#read_property_pdf_property__pid__report_pdf_get
+  remediation: >-
+    Resolve the PID first with search_property or autocomplete_address; a syntactically valid
+    PID is not necessarily a PID Landcor holds valuation data for.
+- status: 422
+  title: Validation Error
+  declared_in_spec: true
+  schema: HTTPValidationError
+  detail_shape: 'array of ValidationError objects, each with loc (array of string or integer), msg (string) and type (string)'
+  applies_to: all eleven operations other than health_check_health_get
+  common_causes:
+  - pid does not match ^\d{3}-\d{3}-\d{3}$
+  - autocomplete q shorter than 3 or longer than 200 characters
+  - autocomplete limit outside 1..50
+  - neighbourhood sales interval not one of monthly | rolling3m
+  - neighbourhood sales months < 1, or snapshot_day outside 1..31
+  remediation: Read detail[].loc to find the offending parameter and detail[].msg for the constraint violated.
+- status: 502
+  title: Upstream report service failure
+  declared_in_spec: false
+  evidence: >-
+    Stated in read_property_pdf_property__pid__report_pdf_get: "a 502 error indicates that the
+    legacy webservice either rejected the request or responded without" a usable document. The
+    legacy Landcor SOAP webservice is named in the spec's own description.
+  source_operations:
+  - openapi/landcor-property-api-openapi.json#read_property_pdf_property__pid__report_pdf_get
+  remediation: Retry; the failure is in the upstream SOAP report generator, not in the request.
+gaps:
+- No error code registry, no error reference page, no problem type URIs.
+- 401, 404 and 502 are undeclared in the response objects, so they are invisible to generated clients.
+- No documented rate-limit error (429) and no rate-limit headers observed.
