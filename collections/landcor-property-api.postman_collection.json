@@ -1,0 +1,2001 @@
+{
+  "item": [
+    {
+      "id": "66d4c30d-e1e5-4473-af31-dcd88ddd9139",
+      "name": "Health",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2b5c8f6d-16e1-4309-9f98-eab4bb04529e",
+          "name": "Service health check",
+          "request": {
+            "name": "Service health check",
+            "description": {
+              "content": "Simple liveness endpoint for load balancers and uptime checks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "10685594-4090-4c4b-bf19-982e82ae03ed",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "23219fa6-63a9-4f35-9054-dda216e989d2",
+      "name": "Property",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c3538bdf-39f4-48da-bcf4-916c863aaac5",
+          "name": "Search for properties using the stored procedure address filters.",
+          "request": {
+            "name": "Search for properties using the stored procedure address filters.",
+            "description": {
+              "content": "Args:\n        filters: Collection of optional address filters such as\n            ``StreetName`` or ``PostalCode`` that are forwarded to\n            :data:`~services.stored_procedures.USP_SEARCH_SERVICE_PROPERTY`.\n\n    Returns:\n        A list of :class:`PropertySearchResult` objects containing normalized\n        PID, jurisdiction, address, and actual use type information.\n\n    Business Rules:\n        * A ``404`` response is returned when the underlying search yields no\n          rows.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "property",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "unit_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "street_direction",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "street_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "street_name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "postal_code",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "489d6464-ede0-41b0-b79e-eef76a32ac57",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "property",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unit_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "street_direction",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "street_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "street_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "postal_code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"pid\": \"string\",\n    \"jurisdiction\": \"string\",\n    \"address\": \"string\",\n    \"actual_use_type\": \"string\"\n  },\n  {\n    \"pid\": \"string\",\n    \"jurisdiction\": \"string\",\n    \"address\": \"string\",\n    \"actual_use_type\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "958e6e4b-748a-4326-a9cb-7e638c4a3f6e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "property",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unit_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "street_direction",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "street_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "street_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "postal_code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5668b9eb-4b55-47cf-b125-dd30741ebbb5",
+          "name": "Retrieve detailed information for a property.",
+          "request": {
+            "name": "Retrieve detailed information for a property.",
+            "description": {
+              "content": "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        PropertyResponse: Envelope containing the PID, formatted address\n        metadata, and nested assessment, usage, exterior, interior, and\n        jurisdiction sections. The assessment section includes derived values\n        such as price-per-square-foot, while the exterior section summarizes\n        parking counts and amenity flags.\n\n    Business Rules:\n        * A 404 error is returned if the property cannot be located.\n        * 'Y'/'N' flag values are converted to booleans.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "property",
+                ":pid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pid",
+                  "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cd3db7b1-7ce4-4556-af5c-7e947d1fed95",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "property",
+                    ":pid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"601-490-610\",\n  \"address\": {\n    \"property_address\": \"string\",\n    \"unit_number\": \"string\",\n    \"street_number\": \"string\",\n    \"street_number_from\": \"string\",\n    \"street_number_to\": \"string\",\n    \"street_direction\": \"string\",\n    \"street_name\": \"string\",\n    \"city\": \"string\",\n    \"postal_code\": \"string\",\n    \"address_query\": \"string\",\n    \"geo_coordinate_query\": \"string\"\n  },\n  \"assessment\": {\n    \"assessment_area_code\": 710,\n    \"assessment_area\": \"string\",\n    \"jurisdiction_code\": 2383,\n    \"jurisdiction\": \"string\",\n    \"roll_number\": \"string\",\n    \"neighbourhood_code\": \"string\",\n    \"neighbourhood\": \"string\",\n    \"last_land_value_amount\": 5248.176069934856,\n    \"last_improvement_value_amount\": 8721.168528904596,\n    \"last_total_value_amount\": 340.6928284173527,\n    \"previous_total_value_amount\": 5497.772028366247,\n    \"price_per_square_foot\": 6203.2098938202225,\n    \"year_over_year_change\": 6868.4432396341035\n  },\n  \"usage\": {\n    \"use_code\": 8459,\n    \"use_description\": \"string\",\n    \"unit_type_code\": 9201,\n    \"unit_type_description\": \"string\",\n    \"development_class\": 8582,\n    \"development_class_sign\": \"string\",\n    \"actual_use_type\": \"string\",\n    \"manual_class_type\": \"string\",\n    \"is_rural_property\": false,\n    \"zoning_code\": \"string\",\n    \"zoning_description\": \"string\",\n    \"school_district\": \"string\",\n    \"regional_district\": \"string\",\n    \"electoral_area\": \"string\",\n    \"hospital_district\": \"string\",\n    \"improvement_district\": \"string\",\n    \"local_area\": \"string\"\n  },\n  \"exterior\": {\n    \"year_built\": 6816,\n    \"effective_year\": 8379,\n    \"foundation_type_code\": \"string\",\n    \"foundation_type\": \"string\",\n    \"covered_deck_area\": 8169.8135722355855,\n    \"uncovered_deck_area\": 723.4122613661053,\n    \"carports\": 2694,\n    \"single_garages\": 5361,\n    \"multi_garages\": 1012,\n    \"parking_summary\": \"string\",\n    \"has_pool\": false,\n    \"pool\": true,\n    \"other_buildings\": false,\n    \"exterior_type_code\": 6006,\n    \"exterior_type_description\": \"string\",\n    \"corner_lot\": false,\n    \"waterfront_lot\": false,\n    \"water_lot\": true,\n    \"prime_view_lot\": true,\n    \"good_view_lot\": false,\n    \"fair_view_lot\": false,\n    \"lot_size_sq_ft\": 7987.080752725025,\n    \"lot_size_text\": \"string\",\n    \"lot_size_freeform\": \"string\",\n    \"lot_width_ft\": 8459.318373243108,\n    \"lot_depth_ft\": 8852.501719756461\n  },\n  \"interior\": {\n    \"stories\": 9893.262574612007,\n    \"bedrooms\": 5587,\n    \"bathrooms_4_piece\": 8653,\n    \"bathrooms_3_piece\": 9560,\n    \"bathrooms_2_piece\": 3387,\n    \"bathroom_total\": 692,\n    \"fireplaces\": 8739,\n    \"fireplace_total\": 359,\n    \"fireplace_type\": \"string\",\n    \"total_basement_area\": 2973.3141648483543,\n    \"finished_basement_area\": 6103.0266426206645,\n    \"basement_unfinished_area\": 2148,\n    \"basement_finished_area\": 9362,\n    \"main_finished_area\": 2334,\n    \"total_finished_area\": 5455.475945020701\n  },\n  \"other\": {\n    \"owner_address\": \"string\",\n    \"characteristics\": \"string\",\n    \"legal_description\": \"string\",\n    \"additional_pids\": \"string\",\n    \"legal_lot\": \"string\",\n    \"legal_block\": \"string\",\n    \"legal_section\": \"string\",\n    \"legal_township\": \"string\",\n    \"legal_range\": \"string\",\n    \"legal_meridian\": \"string\",\n    \"legal_plan\": \"string\",\n    \"legal_district_lot\": \"string\",\n    \"legal_land_district\": \"string\",\n    \"alr\": false,\n    \"coop\": false\n  },\n  \"sale\": {\n    \"sale_date\": \"1990-06-13\",\n    \"sale_price\": 5668.052622612246\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75d3686e-d49b-42dc-aebb-8da7242b31d7",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "property",
+                    ":pid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fbdf51a6-d3e0-4efa-a531-92643d5f7eeb",
+          "name": "Return the encrypted PDF report for a property.",
+          "request": {
+            "name": "Return the encrypted PDF report for a property.",
+            "description": {
+              "content": "The PID is first resolved into assessment area (AA) code, jurisdiction code\n    and roll number. These identifiers are required by the legacy Landcor SOAP\n    webservice, which returns a base64-encoded, password protected PDF. A 404\n    error is returned when the PID cannot be resolved, while a 502 error\n    indicates that the legacy webservice either rejected the request or\n    responded without a valid PDF payload.\n\n    ``use_test_credentials`` is set when the caller presented a TEST token so\n    the legacy webservice is authenticated with the TEST credential set.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "property",
+                ":pid",
+                "report",
+                "pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pid",
+                  "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "80e002f4-37e2-49cc-be24-bb72e00af45a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "property",
+                    ":pid",
+                    "report",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"065-765-033\",\n  \"aa_code\": 10,\n  \"j_code\": 20,\n  \"roll_number\": \"01234567890\",\n  \"encrypted_pdf\": \"string\",\n  \"valuation\": 5583.47764659219\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f764216b-3b5d-4065-911e-b9637a730347",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "property",
+                    ":pid",
+                    "report",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0393174a-186a-4451-b9c4-3cb13f1378c9",
+          "name": "Autocomplete address lookup",
+          "request": {
+            "name": "Autocomplete address lookup",
+            "description": {
+              "content": "Returns matching address suggestions based on partial address input. Each word in the query must match a word boundary in the address. Requires at least 3 characters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "address",
+                "autocomplete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) Partial address string to search for."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of suggestions to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "75ce99ac-65d0-4ade-a126-2bbb94d21e7d",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "address",
+                    "autocomplete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "123 main"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"suggestions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"count\": 2406\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb2b2cb8-d984-4901-b4f1-a04b5c571293",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "address",
+                    "autocomplete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "123 main"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d6199c2d-40ea-4567-b516-0ef3ed29cb3e",
+      "name": "Valuation",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "13efeef5-4232-41b4-818a-c33895114bc8",
+          "name": "Retrieve valuation range information for a property.",
+          "request": {
+            "name": "Retrieve valuation range information for a property.",
+            "description": {
+              "content": "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "valuationRange",
+                ":pid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pid",
+                  "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7f2dd74b-9d4c-4c8d-90db-0886929457e3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuationRange",
+                    ":pid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"916-022-935\",\n  \"low_range_value\": 6199.34616071489,\n  \"high_range_value\": 6295.353813567701\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3264d93c-3b73-4e22-8ebd-1536ba9aa7de",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuationRange",
+                    ":pid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e41038c2-7550-4eb2-bbc6-f15adb06a2e5",
+          "name": "Return the valuation range for compatibility with the updates endpoint.",
+          "request": {
+            "name": "Return the valuation range for compatibility with the updates endpoint.",
+            "description": {
+              "content": "Historically this endpoint exposed multiple update strategies. The\n    functionality now mirrors :func:`get_property_valuation_range` so that\n    clients receive the same data as the valuation range endpoint.\n\n    Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "valuationRange",
+                ":pid",
+                "updates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pid",
+                  "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dd5e2dee-32c0-428f-b0b0-45cfea0c036f",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuationRange",
+                    ":pid",
+                    "updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"916-022-935\",\n  \"low_range_value\": 6199.34616071489,\n  \"high_range_value\": 6295.353813567701\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8badf6e1-bbf4-471e-9bd3-3c55d1fcee34",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuationRange",
+                    ":pid",
+                    "updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "110a80d8-7cf8-43f4-8cc4-1ca4b3f87a3e",
+          "name": "Retrieve the complete valuation history for a property.",
+          "request": {
+            "name": "Retrieve the complete valuation history for a property.",
+            "description": {
+              "content": "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationHistoryResponse containing chronological valuation data points.\n\n    Business Rules:\n        * A 404 error is raised if no valuation history exists for the PID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "valuationRange",
+                ":pid",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pid",
+                  "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7fbac7ba-4695-43ca-8653-d746a4cf8221",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuationRange",
+                    ":pid",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"601-485-464\",\n  \"points\": [\n    {\n      \"snapshot_date\": \"1999-10-14\",\n      \"low_range_value\": 28.697440344365166,\n      \"high_range_value\": 4481.640241230144\n    },\n    {\n      \"snapshot_date\": \"2025-10-31\",\n      \"low_range_value\": 5100.902683672049,\n      \"high_range_value\": 9677.873965611743\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a3538c1f-00be-4fb4-afff-cc1d550f62dd",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuationRange",
+                    ":pid",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17142586-8244-4f57-b217-7da4750a10b1",
+          "name": "Compare a property's AVM value against a provided LTV amount.",
+          "request": {
+            "name": "Compare a property's AVM value against a provided LTV amount.",
+            "description": {},
+            "url": {
+              "path": [
+                "valuation",
+                "ltv-check"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pid\": \"<string>\",\n  \"ltv_amount\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "73bae8e2-99de-4365-ad28-89ea2928e4d3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuation",
+                    "ltv-check"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pid\": \"<string>\",\n  \"ltv_amount\": 500000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"210-822-650\",\n  \"ltv_amount\": 2125.665487386781,\n  \"has_avm\": false,\n  \"avm_exceeds_ltv\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a23504e-64ef-40cd-b18c-16d0a51417c2",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuation",
+                    "ltv-check"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pid\": \"<string>\",\n  \"ltv_amount\": 500000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7990626c-0c0c-415d-a73a-2ad571eb26b5",
+          "name": "Retrieve aggregated neighbourhood sales data.",
+          "request": {
+            "name": "Retrieve aggregated neighbourhood sales data.",
+            "description": {
+              "content": "Args:\n        neighbourhood_code: Assessment neighbourhood identifier.\n        unit_type_code: Unit type grouping for comparable sales.\n        interval: Aggregation interval flag (``\"monthly\"`` or ``\"rolling3m\"``).\n        months: Number of months of data to request.\n        snapshot_day: Preferred day of the month for aggregation snapshots.\n\n    Returns:\n        NeighbourhoodSalesSeriesResponse containing sales metrics over time.\n\n    Business Rules:\n        * A 400 error is raised if ``interval`` is not recognised.\n        * A 404 error is raised when no sales data is available.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "valuation",
+                "neighbourhood",
+                ":neighbourhood_code",
+                ":unit_type_code",
+                "sales"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "monthly",
+                  "description": "Aggregation interval for the sales series. Use 'monthly' for discrete months or 'rolling3m' for rolling averages."
+                },
+                {
+                  "disabled": false,
+                  "key": "months",
+                  "value": "24",
+                  "description": "Number of months of history to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "snapshot_day",
+                  "value": "15",
+                  "description": "Preferred day of the month for the aggregation snapshot."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "neighbourhood_code",
+                  "description": "(Required) Assessment neighbourhood identifier."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "unit_type_code",
+                  "description": "(Required) Unit type code used to group comparable properties."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "49ff8ecb-ef4a-4ed0-8516-5631e1cc7609",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuation",
+                    "neighbourhood",
+                    ":neighbourhood_code",
+                    ":unit_type_code",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "monthly"
+                    },
+                    {
+                      "key": "months",
+                      "value": "24"
+                    },
+                    {
+                      "key": "snapshot_day",
+                      "value": "15"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "neighbourhood_code",
+                      "description": "(Required) Assessment neighbourhood identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "unit_type_code",
+                      "description": "(Required) Unit type code used to group comparable properties."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"neighbourhood_code\": \"string\",\n  \"unit_type_code\": \"string\",\n  \"points\": [\n    {\n      \"period_start\": \"2022-05-26\",\n      \"period_end\": \"2019-01-12\",\n      \"min_sale_price\": 3381.1763367325975,\n      \"max_sale_price\": 1838.9015540404096,\n      \"avg_sale_price\": 5981.627437788486,\n      \"median_sale_price\": 9905.79217756891,\n      \"data_source\": \"string\"\n    },\n    {\n      \"period_start\": \"1998-01-31\",\n      \"period_end\": \"1952-12-20\",\n      \"min_sale_price\": 954.30221663102,\n      \"max_sale_price\": 2244.5276853952214,\n      \"avg_sale_price\": 7646.605797829373,\n      \"median_sale_price\": 8876.241153675666,\n      \"data_source\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "987d1833-55b9-4940-aa53-4b13e56cf741",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "valuation",
+                    "neighbourhood",
+                    ":neighbourhood_code",
+                    ":unit_type_code",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "monthly"
+                    },
+                    {
+                      "key": "months",
+                      "value": "24"
+                    },
+                    {
+                      "key": "snapshot_day",
+                      "value": "15"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "neighbourhood_code",
+                      "description": "(Required) Assessment neighbourhood identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "unit_type_code",
+                      "description": "(Required) Unit type code used to group comparable properties."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b42a28e2-ba78-4a62-bd1c-12dc6d300a07",
+      "name": "Comparables",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3a415bee-4448-4331-b131-509241dfdbf9",
+          "name": "Retrieve properties comparable to the given PID.",
+          "request": {
+            "name": "Retrieve properties comparable to the given PID.",
+            "description": {},
+            "url": {
+              "path": [
+                "comparables",
+                ":pid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pid",
+                  "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d3f73539-cc95-493e-98b7-0c3e69b2b34b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "comparables",
+                    ":pid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pid\": \"419-166-984\",\n  \"comparables\": [\n    {\n      \"address\": {\n        \"property_address\": \"string\",\n        \"unit_number\": \"string\",\n        \"street_number\": \"string\",\n        \"street_number_from\": \"string\",\n        \"street_number_to\": \"string\",\n        \"street_direction\": \"string\",\n        \"street_name\": \"string\",\n        \"city\": \"string\",\n        \"postal_code\": \"string\",\n        \"address_query\": \"string\",\n        \"geo_coordinate_query\": \"string\"\n      },\n      \"distance_to_subject_property\": \"string\",\n      \"distance_to_subject_property_meters\": 9333.307924935043,\n      \"assessment\": {\n        \"assessment_area_code\": 5966,\n        \"assessment_area\": \"string\",\n        \"jurisdiction_code\": 6261,\n        \"jurisdiction\": \"string\",\n        \"roll_number\": \"string\",\n        \"neighbourhood_code\": \"string\",\n        \"neighbourhood\": \"string\",\n        \"last_land_value_amount\": 7358.457997329373,\n        \"last_improvement_value_amount\": 3745.2660461802943,\n        \"last_total_value_amount\": 158.9359591168771,\n        \"previous_total_value_amount\": 7230.391733937559,\n        \"price_per_square_foot\": 8479.686328590418,\n        \"year_over_year_change\": 7723.013845024763\n      },\n      \"usage\": {\n        \"use_code\": 6734,\n        \"use_description\": \"string\",\n        \"unit_type_code\": 7987,\n        \"unit_type_description\": \"string\",\n        \"development_class\": 9388,\n        \"development_class_sign\": \"string\",\n        \"actual_use_type\": \"string\",\n        \"manual_class_type\": \"string\",\n        \"is_rural_property\": true,\n        \"zoning_code\": \"string\",\n        \"zoning_description\": \"string\",\n        \"school_district\": \"string\",\n        \"regional_district\": \"string\",\n        \"electoral_area\": \"string\",\n        \"hospital_district\": \"string\",\n        \"improvement_district\": \"string\",\n        \"local_area\": \"string\"\n      },\n      \"exterior\": {\n        \"year_built\": 1806,\n        \"effective_year\": 4434,\n        \"foundation_type_code\": \"string\",\n        \"foundation_type\": \"string\",\n        \"covered_deck_area\": 5209.856713054739,\n        \"uncovered_deck_area\": 8297.37698225693,\n        \"carports\": 1421,\n        \"single_garages\": 9248,\n        \"multi_garages\": 4846,\n        \"parking_summary\": \"string\",\n        \"has_pool\": true,\n        \"pool\": false,\n        \"other_buildings\": true,\n        \"exterior_type_code\": 4705,\n        \"exterior_type_description\": \"string\",\n        \"corner_lot\": false,\n        \"waterfront_lot\": false,\n        \"water_lot\": true,\n        \"prime_view_lot\": false,\n        \"good_view_lot\": false,\n        \"fair_view_lot\": false,\n        \"lot_size_sq_ft\": 7751.509824184044,\n        \"lot_size_text\": \"string\",\n        \"lot_size_freeform\": \"string\",\n        \"lot_width_ft\": 4660.236141524927,\n        \"lot_depth_ft\": 4868.352529214196\n      },\n      \"interior\": {\n        \"stories\": 2869.822739011756,\n        \"bedrooms\": 6335,\n        \"bathrooms_4_piece\": 6802,\n        \"bathrooms_3_piece\": 3726,\n        \"bathrooms_2_piece\": 2473,\n        \"bathroom_total\": 5697,\n        \"fireplaces\": 3109,\n        \"fireplace_total\": 1973,\n        \"fireplace_type\": \"string\",\n        \"total_basement_area\": 1195.1424876589967,\n        \"finished_basement_area\": 2874.00820160433,\n        \"basement_unfinished_area\": 8304,\n        \"basement_finished_area\": 4965,\n        \"main_finished_area\": 3571,\n        \"total_finished_area\": 1771.6584077040543\n      },\n      \"other\": {\n        \"owner_address\": \"string\",\n        \"characteristics\": \"string\",\n        \"legal_description\": \"string\",\n        \"additional_pids\": \"string\",\n        \"legal_lot\": \"string\",\n        \"legal_block\": \"string\",\n        \"legal_section\": \"string\",\n        \"legal_township\": \"string\",\n        \"legal_range\": \"string\",\n        \"legal_meridian\": \"string\",\n        \"legal_plan\": \"string\",\n        \"legal_district_lot\": \"string\",\n        \"legal_land_district\": \"string\",\n        \"alr\": true,\n        \"coop\": true\n      },\n      \"sale\": {\n        \"sale_date\": \"1998-11-02\",\n        \"sale_price\": 3740.2201372424847\n      }\n    },\n    {\n      \"address\": {\n        \"property_address\": \"string\",\n        \"unit_number\": \"string\",\n        \"street_number\": \"string\",\n        \"street_number_from\": \"string\",\n        \"street_number_to\": \"string\",\n        \"street_direction\": \"string\",\n        \"street_name\": \"string\",\n        \"city\": \"string\",\n        \"postal_code\": \"string\",\n        \"address_query\": \"string\",\n        \"geo_coordinate_query\": \"string\"\n      },\n      \"distance_to_subject_property\": \"string\",\n      \"distance_to_subject_property_meters\": 2925.62977066706,\n      \"assessment\": {\n        \"assessment_area_code\": 7157,\n        \"assessment_area\": \"string\",\n        \"jurisdiction_code\": 4656,\n        \"jurisdiction\": \"string\",\n        \"roll_number\": \"string\",\n        \"neighbourhood_code\": \"string\",\n        \"neighbourhood\": \"string\",\n        \"last_land_value_amount\": 2052.4435379528873,\n        \"last_improvement_value_amount\": 8288.378120834328,\n        \"last_total_value_amount\": 5816.279159209328,\n        \"previous_total_value_amount\": 772.8366158811683,\n        \"price_per_square_foot\": 5703.108288707698,\n        \"year_over_year_change\": 9153.361259672765\n      },\n      \"usage\": {\n        \"use_code\": 2882,\n        \"use_description\": \"string\",\n        \"unit_type_code\": 8378,\n        \"unit_type_description\": \"string\",\n        \"development_class\": 370,\n        \"development_class_sign\": \"string\",\n        \"actual_use_type\": \"string\",\n        \"manual_class_type\": \"string\",\n        \"is_rural_property\": false,\n        \"zoning_code\": \"string\",\n        \"zoning_description\": \"string\",\n        \"school_district\": \"string\",\n        \"regional_district\": \"string\",\n        \"electoral_area\": \"string\",\n        \"hospital_district\": \"string\",\n        \"improvement_district\": \"string\",\n        \"local_area\": \"string\"\n      },\n      \"exterior\": {\n        \"year_built\": 7850,\n        \"effective_year\": 3160,\n        \"foundation_type_code\": \"string\",\n        \"foundation_type\": \"string\",\n        \"covered_deck_area\": 9339.225063260834,\n        \"uncovered_deck_area\": 8591.978670884588,\n        \"carports\": 1528,\n        \"single_garages\": 9630,\n        \"multi_garages\": 5240,\n        \"parking_summary\": \"string\",\n        \"has_pool\": true,\n        \"pool\": false,\n        \"other_buildings\": false,\n        \"exterior_type_code\": 5704,\n        \"exterior_type_description\": \"string\",\n        \"corner_lot\": true,\n        \"waterfront_lot\": true,\n        \"water_lot\": false,\n        \"prime_view_lot\": true,\n        \"good_view_lot\": false,\n        \"fair_view_lot\": true,\n        \"lot_size_sq_ft\": 7314.84268451549,\n        \"lot_size_text\": \"string\",\n        \"lot_size_freeform\": \"string\",\n        \"lot_width_ft\": 5746.539472627613,\n        \"lot_depth_ft\": 429.2755533933934\n      },\n      \"interior\": {\n        \"stories\": 6842.6534342034965,\n        \"bedrooms\": 354,\n        \"bathrooms_4_piece\": 3591,\n        \"bathrooms_3_piece\": 6389,\n        \"bathrooms_2_piece\": 183,\n        \"bathroom_total\": 6687,\n        \"fireplaces\": 1275,\n        \"fireplace_total\": 8065,\n        \"fireplace_type\": \"string\",\n        \"total_basement_area\": 8872.7187653016,\n        \"finished_basement_area\": 4910.704624738498,\n        \"basement_unfinished_area\": 1054,\n        \"basement_finished_area\": 4024,\n        \"main_finished_area\": 4012,\n        \"total_finished_area\": 7334.942268047507\n      },\n      \"other\": {\n        \"owner_address\": \"string\",\n        \"characteristics\": \"string\",\n        \"legal_description\": \"string\",\n        \"additional_pids\": \"string\",\n        \"legal_lot\": \"string\",\n        \"legal_block\": \"string\",\n        \"legal_section\": \"string\",\n        \"legal_township\": \"string\",\n        \"legal_range\": \"string\",\n        \"legal_meridian\": \"string\",\n        \"legal_plan\": \"string\",\n        \"legal_district_lot\": \"string\",\n        \"legal_land_district\": \"string\",\n        \"alr\": true,\n        \"coop\": true\n      },\n      \"sale\": {\n        \"sale_date\": \"1987-03-29\",\n        \"sale_price\": 7492.0187053947275\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8cc48d3b-fce3-4c97-8d95-b71fcace013e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "comparables",
+                    ":pid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pid",
+                      "description": "(Required) Property identifier in format xxx-xxx-xxx"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "2d5cadb6-0301-4be0-8158-22c748db8fdd",
+      "name": "AVM Summary",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a0996090-793f-4191-be4a-554b394e1301",
+          "name": "Generate Avm Summary",
+          "request": {
+            "name": "Generate Avm Summary",
+            "description": {
+              "content": "Generate a narrative summary from uploaded Landcor AVM data.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "generate-avm-summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject_property\": {\n    \"address\": \"<string>\",\n    \"jurisdiction\": \"<string>\",\n    \"neighbourhood\": \"<string>\",\n    \"assessment_area\": \"<string>\",\n    \"property_use\": \"<string>\",\n    \"use_type\": \"<string>\",\n    \"zoning\": \"<string>\",\n    \"alr\": \"<boolean>\",\n    \"coop\": \"<boolean>\",\n    \"lot_size_sqft\": \"<number>\",\n    \"floor_area_sqft\": \"<number>\",\n    \"bedrooms\": \"<integer>\",\n    \"bathrooms\": \"<number>\",\n    \"stories\": \"<number>\",\n    \"year_built\": \"<integer>\",\n    \"effective_year\": \"<integer>\",\n    \"foundation_type\": \"<string>\",\n    \"fireplace\": \"<integer>\",\n    \"pool\": \"<boolean>\",\n    \"parking\": \"<string>\",\n    \"covered_deck_sqft\": \"<number>\",\n    \"uncovered_deck_sqft\": \"<number>\",\n    \"other_buildings\": \"<boolean>\"\n  },\n  \"valuation\": {\n    \"estimated_value\": \"<number>\",\n    \"price_per_sqft\": \"<number>\",\n    \"method\": \"<string>\",\n    \"confidence_score\": \"<string>\",\n    \"lower_band\": \"<number>\",\n    \"upper_band\": \"<number>\",\n    \"total_properties_reviewed\": \"<integer>\"\n  },\n  \"assessment_history\": [\n    {\n      \"year\": \"<integer>\",\n      \"land\": \"<number>\",\n      \"improvements\": \"<number>\",\n      \"total\": \"<number>\"\n    },\n    {\n      \"year\": \"<integer>\",\n      \"land\": \"<number>\",\n      \"improvements\": \"<number>\",\n      \"total\": \"<number>\"\n    }\n  ],\n  \"comparable_sales\": [\n    {\n      \"property_address\": \"<string>\",\n      \"last_sale_price\": \"<number>\",\n      \"last_sale_date\": \"<string>\",\n      \"assessment_land\": \"<number>\",\n      \"assessent_improvements\": \"<number>\",\n      \"assessment_total\": \"<number>\",\n      \"use_type\": \"<string>\",\n      \"characteristics\": \"<string>\",\n      \"bedrooms\": \"<integer>\",\n      \"bathrooms\": \"<number>\",\n      \"floor_area_sqft\": \"<number>\",\n      \"lot_size_sqft\": \"<number>\",\n      \"year_built\": \"<integer>\",\n      \"effective_year\": \"<integer>\",\n      \"foundation\": \"<string>\",\n      \"parking\": \"<string>\",\n      \"neighbourhood\": \"<string>\",\n      \"latitude\": \"<number>\",\n      \"longitude\": \"<number>\"\n    },\n    {\n      \"property_address\": \"<string>\",\n      \"last_sale_price\": \"<number>\",\n      \"last_sale_date\": \"<string>\",\n      \"assessment_land\": \"<number>\",\n      \"assessent_improvements\": \"<number>\",\n      \"assessment_total\": \"<number>\",\n      \"use_type\": \"<string>\",\n      \"characteristics\": \"<string>\",\n      \"bedrooms\": \"<integer>\",\n      \"bathrooms\": \"<number>\",\n      \"floor_area_sqft\": \"<number>\",\n      \"lot_size_sqft\": \"<number>\",\n      \"year_built\": \"<integer>\",\n      \"effective_year\": \"<integer>\",\n      \"foundation\": \"<string>\",\n      \"parking\": \"<string>\",\n      \"neighbourhood\": \"<string>\",\n      \"latitude\": \"<number>\",\n      \"longitude\": \"<number>\"\n    }\n  ],\n  \"neighbourhood\": {\n    \"avg_assessed_value\": \"<number>\",\n    \"avg_price_last_6_months\": \"<number>\",\n    \"last_valid_sale_date\": \"<string>\",\n    \"value_range\": {\n      \"low\": \"<number>\",\n      \"median\": \"<number>\",\n      \"high\": \"<number>\"\n    }\n  },\n  \"sales_history\": [\n    {\n      \"date\": \"<string>\",\n      \"amount\": \"<number>\",\n      \"sale_type\": \"<string>\",\n      \"title_certificate_number\": \"<string>\"\n    },\n    {\n      \"date\": \"<string>\",\n      \"amount\": \"<number>\",\n      \"sale_type\": \"<string>\",\n      \"title_certificate_number\": \"<string>\"\n    }\n  ],\n  \"valuation_change\": {\n    \"last_sale_date\": \"<string>\",\n    \"last_sale_price\": \"<number>\"\n  },\n  \"climate_events\": {\n    \"has_recent_events\": \"<boolean>\",\n    \"events\": [\n      {\n        \"type\": \"<string>\",\n        \"date\": \"<string>\",\n        \"severity\": \"<string>\",\n        \"notes\": \"<string>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"date\": \"<string>\",\n        \"severity\": \"<string>\",\n        \"notes\": \"<string>\"\n      }\n    ]\n  },\n  \"permit_history\": {\n    \"permits\": [\n      {\n        \"date\": \"<string>\",\n        \"permit_number\": \"<string>\",\n        \"demolition\": \"<string>\",\n        \"description\": \"<string>\",\n        \"value\": \"<number>\",\n        \"status\": \"<string>\"\n      },\n      {\n        \"date\": \"<string>\",\n        \"permit_number\": \"<string>\",\n        \"demolition\": \"<string>\",\n        \"description\": \"<string>\",\n        \"value\": \"<number>\",\n        \"status\": \"<string>\"\n      }\n    ],\n    \"last_permit_date\": \"<string>\"\n  },\n  \"scores\": {\n    \"walk\": \"<integer>\",\n    \"transit\": \"<integer>\",\n    \"bike\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0f0a9afa-9b93-4428-869f-f962796eec81",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "generate-avm-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subject_property\": {\n    \"address\": \"string\",\n    \"jurisdiction\": \"string\",\n    \"neighbourhood\": \"string\",\n    \"assessment_area\": \"string\",\n    \"property_use\": \"string\",\n    \"use_type\": \"string\",\n    \"zoning\": \"string\",\n    \"alr\": false,\n    \"coop\": false,\n    \"lot_size_sqft\": 2249.4617541530215,\n    \"floor_area_sqft\": 8839.748706755498,\n    \"bedrooms\": 1741,\n    \"bathrooms\": 8028.288246284092,\n    \"stories\": 7898.757578100915,\n    \"year_built\": 528,\n    \"effective_year\": 2445,\n    \"foundation_type\": \"string\",\n    \"fireplace\": 9451,\n    \"pool\": false,\n    \"parking\": \"string\",\n    \"covered_deck_sqft\": 3533.763855138319,\n    \"uncovered_deck_sqft\": 2008.1409091816538,\n    \"other_buildings\": false\n  },\n  \"valuation\": {\n    \"estimated_value\": 1684.4736862889943,\n    \"price_per_sqft\": 5386.4263273071365,\n    \"method\": \"string\",\n    \"confidence_score\": \"string\",\n    \"lower_band\": 8597.785037786794,\n    \"upper_band\": 7139.370363320555,\n    \"total_properties_reviewed\": 6153\n  },\n  \"assessment_history\": [\n    {\n      \"year\": 1950,\n      \"land\": 6729.047135498603,\n      \"improvements\": 4200.499388306827,\n      \"total\": 3604.5188119561076\n    },\n    {\n      \"year\": 3757,\n      \"land\": 5787.1392306903845,\n      \"improvements\": 984.4155436526147,\n      \"total\": 8827.183094978864\n    }\n  ],\n  \"comparable_sales\": [\n    {\n      \"property_address\": \"string\",\n      \"last_sale_price\": 1000.4171419325536,\n      \"last_sale_date\": \"string\",\n      \"assessment_land\": 60.63649847334762,\n      \"assessent_improvements\": 302.91041777844583,\n      \"assessment_total\": 9069.236557598379,\n      \"use_type\": \"string\",\n      \"characteristics\": \"string\",\n      \"bedrooms\": 1276,\n      \"bathrooms\": 9200.283244772636,\n      \"floor_area_sqft\": 7735.213747326595,\n      \"lot_size_sqft\": 3069.163986915556,\n      \"year_built\": 5531,\n      \"effective_year\": 3910,\n      \"foundation\": \"string\",\n      \"parking\": \"string\",\n      \"neighbourhood\": \"string\",\n      \"latitude\": 6597.966694408179,\n      \"longitude\": 6489.678511535989\n    },\n    {\n      \"property_address\": \"string\",\n      \"last_sale_price\": 9348.741095493497,\n      \"last_sale_date\": \"string\",\n      \"assessment_land\": 7055.476213126245,\n      \"assessent_improvements\": 8972.241658918949,\n      \"assessment_total\": 1699.902659669098,\n      \"use_type\": \"string\",\n      \"characteristics\": \"string\",\n      \"bedrooms\": 8535,\n      \"bathrooms\": 6449.134597480184,\n      \"floor_area_sqft\": 8484.81306798122,\n      \"lot_size_sqft\": 7272.553311295089,\n      \"year_built\": 7581,\n      \"effective_year\": 2156,\n      \"foundation\": \"string\",\n      \"parking\": \"string\",\n      \"neighbourhood\": \"string\",\n      \"latitude\": 1238.4395230906175,\n      \"longitude\": 4634.66521926506\n    }\n  ],\n  \"neighbourhood\": {\n    \"avg_assessed_value\": 6581.403384921667,\n    \"avg_price_last_6_months\": 7625.529610168435,\n    \"last_valid_sale_date\": \"string\",\n    \"value_range\": {\n      \"low\": 8777.910879725196,\n      \"median\": 9007.496880159208,\n      \"high\": 4640.384984481479\n    }\n  },\n  \"sales_history\": [\n    {\n      \"date\": \"string\",\n      \"amount\": 4482.129103757789,\n      \"sale_type\": \"string\",\n      \"title_certificate_number\": \"string\"\n    },\n    {\n      \"date\": \"string\",\n      \"amount\": 8229.3332876284,\n      \"sale_type\": \"string\",\n      \"title_certificate_number\": \"string\"\n    }\n  ],\n  \"valuation_change\": {\n    \"last_sale_date\": \"string\",\n    \"last_sale_price\": 1359.4940134848987\n  },\n  \"climate_events\": {\n    \"has_recent_events\": true,\n    \"events\": [\n      {\n        \"type\": \"string\",\n        \"date\": \"string\",\n        \"severity\": \"string\",\n        \"notes\": \"string\"\n      },\n      {\n        \"type\": \"string\",\n        \"date\": \"string\",\n        \"severity\": \"string\",\n        \"notes\": \"string\"\n      }\n    ]\n  },\n  \"permit_history\": {\n    \"permits\": [\n      {\n        \"date\": \"string\",\n        \"permit_number\": \"string\",\n        \"demolition\": \"string\",\n        \"description\": \"string\",\n        \"value\": 3972.687723190108,\n        \"status\": \"string\"\n      },\n      {\n        \"date\": \"string\",\n        \"permit_number\": \"string\",\n        \"demolition\": \"string\",\n        \"description\": \"string\",\n        \"value\": 7284.204666165968,\n        \"status\": \"string\"\n      }\n    ],\n    \"last_permit_date\": \"string\"\n  },\n  \"scores\": {\n    \"walk\": 2098,\n    \"transit\": 1749,\n    \"bike\": 8912\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"summary\": \"string\",\n  \"validation\": {\n    \"valid\": false,\n    \"messages\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d89c7421-65bf-4a52-b366-aab5198bbdc3",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "generate-avm-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subject_property\": {\n    \"address\": \"string\",\n    \"jurisdiction\": \"string\",\n    \"neighbourhood\": \"string\",\n    \"assessment_area\": \"string\",\n    \"property_use\": \"string\",\n    \"use_type\": \"string\",\n    \"zoning\": \"string\",\n    \"alr\": false,\n    \"coop\": false,\n    \"lot_size_sqft\": 2249.4617541530215,\n    \"floor_area_sqft\": 8839.748706755498,\n    \"bedrooms\": 1741,\n    \"bathrooms\": 8028.288246284092,\n    \"stories\": 7898.757578100915,\n    \"year_built\": 528,\n    \"effective_year\": 2445,\n    \"foundation_type\": \"string\",\n    \"fireplace\": 9451,\n    \"pool\": false,\n    \"parking\": \"string\",\n    \"covered_deck_sqft\": 3533.763855138319,\n    \"uncovered_deck_sqft\": 2008.1409091816538,\n    \"other_buildings\": false\n  },\n  \"valuation\": {\n    \"estimated_value\": 1684.4736862889943,\n    \"price_per_sqft\": 5386.4263273071365,\n    \"method\": \"string\",\n    \"confidence_score\": \"string\",\n    \"lower_band\": 8597.785037786794,\n    \"upper_band\": 7139.370363320555,\n    \"total_properties_reviewed\": 6153\n  },\n  \"assessment_history\": [\n    {\n      \"year\": 1950,\n      \"land\": 6729.047135498603,\n      \"improvements\": 4200.499388306827,\n      \"total\": 3604.5188119561076\n    },\n    {\n      \"year\": 3757,\n      \"land\": 5787.1392306903845,\n      \"improvements\": 984.4155436526147,\n      \"total\": 8827.183094978864\n    }\n  ],\n  \"comparable_sales\": [\n    {\n      \"property_address\": \"string\",\n      \"last_sale_price\": 1000.4171419325536,\n      \"last_sale_date\": \"string\",\n      \"assessment_land\": 60.63649847334762,\n      \"assessent_improvements\": 302.91041777844583,\n      \"assessment_total\": 9069.236557598379,\n      \"use_type\": \"string\",\n      \"characteristics\": \"string\",\n      \"bedrooms\": 1276,\n      \"bathrooms\": 9200.283244772636,\n      \"floor_area_sqft\": 7735.213747326595,\n      \"lot_size_sqft\": 3069.163986915556,\n      \"year_built\": 5531,\n      \"effective_year\": 3910,\n      \"foundation\": \"string\",\n      \"parking\": \"string\",\n      \"neighbourhood\": \"string\",\n      \"latitude\": 6597.966694408179,\n      \"longitude\": 6489.678511535989\n    },\n    {\n      \"property_address\": \"string\",\n      \"last_sale_price\": 9348.741095493497,\n      \"last_sale_date\": \"string\",\n      \"assessment_land\": 7055.476213126245,\n      \"assessent_improvements\": 8972.241658918949,\n      \"assessment_total\": 1699.902659669098,\n      \"use_type\": \"string\",\n      \"characteristics\": \"string\",\n      \"bedrooms\": 8535,\n      \"bathrooms\": 6449.134597480184,\n      \"floor_area_sqft\": 8484.81306798122,\n      \"lot_size_sqft\": 7272.553311295089,\n      \"year_built\": 7581,\n      \"effective_year\": 2156,\n      \"foundation\": \"string\",\n      \"parking\": \"string\",\n      \"neighbourhood\": \"string\",\n      \"latitude\": 1238.4395230906175,\n      \"longitude\": 4634.66521926506\n    }\n  ],\n  \"neighbourhood\": {\n    \"avg_assessed_value\": 6581.403384921667,\n    \"avg_price_last_6_months\": 7625.529610168435,\n    \"last_valid_sale_date\": \"string\",\n    \"value_range\": {\n      \"low\": 8777.910879725196,\n      \"median\": 9007.496880159208,\n      \"high\": 4640.384984481479\n    }\n  },\n  \"sales_history\": [\n    {\n      \"date\": \"string\",\n      \"amount\": 4482.129103757789,\n      \"sale_type\": \"string\",\n      \"title_certificate_number\": \"string\"\n    },\n    {\n      \"date\": \"string\",\n      \"amount\": 8229.3332876284,\n      \"sale_type\": \"string\",\n      \"title_certificate_number\": \"string\"\n    }\n  ],\n  \"valuation_change\": {\n    \"last_sale_date\": \"string\",\n    \"last_sale_price\": 1359.4940134848987\n  },\n  \"climate_events\": {\n    \"has_recent_events\": true,\n    \"events\": [\n      {\n        \"type\": \"string\",\n        \"date\": \"string\",\n        \"severity\": \"string\",\n        \"notes\": \"string\"\n      },\n      {\n        \"type\": \"string\",\n        \"date\": \"string\",\n        \"severity\": \"string\",\n        \"notes\": \"string\"\n      }\n    ]\n  },\n  \"permit_history\": {\n    \"permits\": [\n      {\n        \"date\": \"string\",\n        \"permit_number\": \"string\",\n        \"demolition\": \"string\",\n        \"description\": \"string\",\n        \"value\": 3972.687723190108,\n        \"status\": \"string\"\n      },\n      {\n        \"date\": \"string\",\n        \"permit_number\": \"string\",\n        \"demolition\": \"string\",\n        \"description\": \"string\",\n        \"value\": 7284.204666165968,\n        \"status\": \"string\"\n      }\n    ],\n    \"last_permit_date\": \"string\"\n  },\n  \"scores\": {\n    \"walk\": 2098,\n    \"transit\": 1749,\n    \"bike\": 8912\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c595f8f2-1568-4ef5-ab57-20e1f827771d",
+    "name": "Landcor Property API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

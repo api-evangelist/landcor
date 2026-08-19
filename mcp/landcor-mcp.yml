@@ -2,16 +2,14 @@ generated: '2026-07-26'
 method: derived
 status: candidate
 source: openapi/landcor-property-api-openapi.json
-note: >-
-  Landcor publishes no hosted or remote MCP server. Searched landcor.com (no developer, API
-  or partner surface exists at all), the Landcor GitHub organization (github.com/Landcor —
-  one empty .github repository, created 2026-06-05), npm, and the public MCP registries; no
-  result. This is a CANDIDATE tool surface derived mechanically from the twelve operations
-  in the live Landcor Property API OpenAPI 3.1.0 document. No MCP endpoint is implied to
-  exist. Every source_operation was verified verbatim against the spec it names.
-  Note also that the derived tools inherit Landcor's access reality: eleven of the twelve
-  require an HTTP Bearer token for which Landcor publishes no issuance route, so an agent
-  cannot self-onboard to this surface even if the server were built.
+note: 'Landcor publishes no hosted or remote MCP server. Searched landcor.com (no developer, API or partner
+  surface exists at all), the Landcor GitHub organization (github.com/Landcor — one empty .github repository,
+  created 2026-06-05), npm, and the public MCP registries; no result. This is a CANDIDATE tool surface
+  derived mechanically from the twelve operations in the live Landcor Property API OpenAPI 3.1.0 document.
+  No MCP endpoint is implied to exist. Every source_operation was verified verbatim against the spec it
+  names. Note also that the derived tools inherit Landcor''s access reality: eleven of the twelve require
+  an HTTP Bearer token for which Landcor publishes no issuance route, so an agent cannot self-onboard
+  to this surface even if the server were built.'
 server:
   name: landcor
   transport: http
@@ -21,10 +19,9 @@ server:
     type: http
     scheme: bearer
     header: Authorization
-    note: >-
-      Single HTTPBearer scheme. Anonymous calls return HTTP 401 {"detail":"Missing token"}
-      (verified live 2026-07-26 against /property/search). No token issuance path is
-      published; credentials require a direct commercial arrangement with Landcor.
+    note: Single HTTPBearer scheme. Anonymous calls return HTTP 401 {"detail":"Missing token"} (verified
+      live 2026-07-26 against /property/search). No token issuance path is published; credentials require
+      a direct commercial arrangement with Landcor.
 tool_count: 12
 tools:
 - name: health_check
@@ -34,12 +31,14 @@ tools:
   auth_required: false
 - name: search_property
   category: property
-  description: Search BC properties by address filters (unit number, street direction, street number, street name, postal code).
+  description: Search BC properties by address filters (unit number, street direction, street number,
+    street name, postal code).
   source_operation: openapi/landcor-property-api-openapi.json#search_property_property_search_get
   auth_required: true
 - name: read_property
   category: property
-  description: Retrieve full property detail for a Landcor PID (assessment, usage, exterior, interior, sale sections).
+  description: Retrieve full property detail for a Landcor PID (assessment, usage, exterior, interior,
+    sale sections).
   source_operation: openapi/landcor-property-api-openapi.json#read_property_property__pid__get
   auth_required: true
 - name: read_property_pdf
@@ -64,7 +63,8 @@ tools:
   auth_required: true
 - name: read_valuation_history
   category: valuation
-  description: Retrieve the chronological valuation history (snapshot date, low and high range) for a property.
+  description: Retrieve the chronological valuation history (snapshot date, low and high range) for a
+    property.
   source_operation: openapi/landcor-property-api-openapi.json#read_valuation_history_valuationRange__pid__history_get
   auth_required: true
 - name: run_ltv_check
@@ -74,7 +74,8 @@ tools:
   auth_required: true
 - name: read_neighbourhood_sales_series
   category: valuation
-  description: Aggregated neighbourhood sales series (monthly or rolling three-month) by neighbourhood and unit type code.
+  description: Aggregated neighbourhood sales series (monthly or rolling three-month) by neighbourhood
+    and unit type code.
   source_operation: openapi/landcor-property-api-openapi.json#read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get
   auth_required: true
 - name: read_comparables
@@ -87,3 +88,9 @@ tools:
   description: Generate a narrative summary from a supplied Landcor AVM payload.
   source_operation: openapi/landcor-property-api-openapi.json#generate_avm_summary_generate_avm_summary_post
   auth_required: true
+deployment:
+  mode: none
+  verified: derived
+  tools: 12
+  checked: '2026-08-12'
+  source: catalog MCP census

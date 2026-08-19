@@ -1,0 +1,355 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Landcor Property API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Health",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Service health check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          },
+          "docs": "Simple liveness endpoint for load balancers and uptime checks."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Property",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search for properties using the stored procedure address filters.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/property/search",
+            "params": [
+              {
+                "name": "unit_number",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "street_direction",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "street_number",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "street_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "postal_code",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Args:\n        filters: Collection of optional address filters such as\n            ``StreetName`` or ``PostalCode`` that are forwarded to\n            :data:`~services.stored_procedures.USP_SEARCH_SERVICE_PROPERTY`.\n\n    Returns:\n        A list of :class:`PropertySearchResult` objects containing normalized\n        PID, jurisdiction, address, and actual use type information.\n\n    Business Rules:\n        * A ``404`` response is returned when the underlying search yields no\n          rows."
+        },
+        {
+          "info": {
+            "name": "Retrieve detailed information for a property.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/property/:pid",
+            "params": [
+              {
+                "name": "pid",
+                "value": "xxx-xxx-xxx",
+                "type": "path",
+                "description": "Property identifier in format xxx-xxx-xxx"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        PropertyResponse: Envelope containing the PID, formatted address\n        metadata, and nested assessment, usage, exterior, interior, and\n        jurisdiction sections. The assessment section includes derived values\n        such as price-per-square-foot, while the exterior section summarizes\n        parking counts and amenity flags.\n\n    Business Rules:\n        * A 404 error is returned if the property"
+        },
+        {
+          "info": {
+            "name": "Return the encrypted PDF report for a property.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/property/:pid/report/pdf",
+            "params": [
+              {
+                "name": "pid",
+                "value": "xxx-xxx-xxx",
+                "type": "path",
+                "description": "Property identifier in format xxx-xxx-xxx"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The PID is first resolved into assessment area (AA) code, jurisdiction code\n    and roll number. These identifiers are required by the legacy Landcor SOAP\n    webservice, which returns a base64-encoded, password protected PDF. A 404\n    error is returned when the PID cannot be resolved, while a 502 error\n    indicates that the legacy webservice either rejected the request or\n    responded without a valid PDF payload.\n\n    ``use_test_credentials`` is set when the caller presented a TEST token so\n"
+        },
+        {
+          "info": {
+            "name": "Autocomplete address lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/address/autocomplete",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Partial address string to search for."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of suggestions to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns matching address suggestions based on partial address input. Each word in the query must match a word boundary in the address. Requires at least 3 characters."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Valuation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve valuation range information for a property.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/valuationRange/:pid",
+            "params": [
+              {
+                "name": "pid",
+                "value": "xxx-xxx-xxx",
+                "type": "path",
+                "description": "Property identifier in format xxx-xxx-xxx"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID."
+        },
+        {
+          "info": {
+            "name": "Return the valuation range for compatibility with the updates endpoint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/valuationRange/:pid/updates",
+            "params": [
+              {
+                "name": "pid",
+                "value": "xxx-xxx-xxx",
+                "type": "path",
+                "description": "Property identifier in format xxx-xxx-xxx"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Historically this endpoint exposed multiple update strategies. The\n    functionality now mirrors :func:`get_property_valuation_range` so that\n    clients receive the same data as the valuation range endpoint.\n\n    Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID."
+        },
+        {
+          "info": {
+            "name": "Retrieve the complete valuation history for a property.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/valuationRange/:pid/history",
+            "params": [
+              {
+                "name": "pid",
+                "value": "xxx-xxx-xxx",
+                "type": "path",
+                "description": "Property identifier in format xxx-xxx-xxx"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationHistoryResponse containing chronological valuation data points.\n\n    Business Rules:\n        * A 404 error is raised if no valuation history exists for the PID."
+        },
+        {
+          "info": {
+            "name": "Compare a property's AVM value against a provided LTV amount.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/valuation/ltv-check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Compare a property's AVM value against a provided LTV amount."
+        },
+        {
+          "info": {
+            "name": "Retrieve aggregated neighbourhood sales data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/valuation/neighbourhood/:neighbourhood_code/:unit_type_code/sales",
+            "params": [
+              {
+                "name": "neighbourhood_code",
+                "value": "",
+                "type": "path",
+                "description": "Assessment neighbourhood identifier."
+              },
+              {
+                "name": "unit_type_code",
+                "value": "",
+                "type": "path",
+                "description": "Unit type code used to group comparable properties."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation interval for the sales series. Use 'monthly' for discrete months or 'rolling3m' for rolling averages."
+              },
+              {
+                "name": "months",
+                "value": "",
+                "type": "query",
+                "description": "Number of months of history to include in the response."
+              },
+              {
+                "name": "snapshot_day",
+                "value": "",
+                "type": "query",
+                "description": "Preferred day of the month for the aggregation snapshot."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Args:\n        neighbourhood_code: Assessment neighbourhood identifier.\n        unit_type_code: Unit type grouping for comparable sales.\n        interval: Aggregation interval flag (``\"monthly\"`` or ``\"rolling3m\"``).\n        months: Number of months of data to request.\n        snapshot_day: Preferred day of the month for aggregation snapshots.\n\n    Returns:\n        NeighbourhoodSalesSeriesResponse containing sales metrics over time.\n\n    Business Rules:\n        * A 400 error is raised if ``interv"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Comparables",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve properties comparable to the given PID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/comparables/:pid",
+            "params": [
+              {
+                "name": "pid",
+                "value": "xxx-xxx-xxx",
+                "type": "path",
+                "description": "Property identifier in format xxx-xxx-xxx"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve properties comparable to the given PID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "AVM Summary",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate Avm Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/generate-avm-summary",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a narrative summary from uploaded Landcor AVM data."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
