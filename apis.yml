@@ -47,7 +47,7 @@ tags:
 - Property Data
 created: '2026-07-26'
 modified: '2026-07-26'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: landcor:landcor-property-api
   name: Landcor Property API
