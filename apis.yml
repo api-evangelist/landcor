@@ -35,6 +35,17 @@ description: >-
   product here.
 image: https://www.landcor.com/wp-content/uploads/2026/01/favicon-152.png
 tags:
+- Real-Estate
+- Canada
+- Valuation
+- AVM
+- Property Records
+- Title
+- Land Registry
+- Mortgage
+- PropTech
+- Property Data
+tags_raw:
 - Real Estate
 - Canada
 - Valuation
@@ -83,6 +94,13 @@ apis:
   humanURL: https://api.landcor.com/docs
   baseURL: https://api.landcor.com
   tags:
+  - Property
+  - Valuation
+  - AVM
+  - Comparables
+  - Real-Estate
+  - Canada
+  tags_raw:
   - Property
   - Valuation
   - AVM
