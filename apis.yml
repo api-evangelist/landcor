@@ -60,58 +60,80 @@ created: '2026-07-26'
 modified: '2026-07-26'
 specificationVersion: '0.23'
 apis:
+- aid: landcor:landcor-avm-summary-api
+  name: Landcor Data AVM Summary API
+  description: The AVM Summary API from Landcor Data — 1 operation(s) for avm summary.
+  humanURL: https://api.landcor.com/docs
+  baseURL: https://api.landcor.com
+  tags:
+  - AVM Summary
+  properties:
+  - type: OpenAPI
+    url: openapi/landcor-avm-summary-api-openapi.yml
+  - type: Documentation
+    url: https://api.landcor.com/docs
+  - type: APIReference
+    url: https://api.landcor.com/redoc
+  - type: Authentication
+    url: https://api.landcor.com/docs
+- aid: landcor:landcor-comparables-api
+  name: Landcor Data Comparables API
+  description: The Comparables API from Landcor Data — 1 operation(s) for comparables.
+  humanURL: https://api.landcor.com/docs
+  baseURL: https://api.landcor.com
+  tags:
+  - Comparables
+  properties:
+  - type: OpenAPI
+    url: openapi/landcor-comparables-api-openapi.yml
+  - type: Documentation
+    url: https://api.landcor.com/docs
+  - type: APIReference
+    url: https://api.landcor.com/redoc
+  - type: Authentication
+    url: https://api.landcor.com/docs
+- aid: landcor:landcor-health-api
+  name: Landcor Data Health API
+  description: The Health API from Landcor Data — 1 operation(s) for health.
+  humanURL: https://api.landcor.com/docs
+  baseURL: https://api.landcor.com
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/landcor-health-api-openapi.yml
+  - type: Documentation
+    url: https://api.landcor.com/docs
+  - type: APIReference
+    url: https://api.landcor.com/redoc
+  - type: Authentication
+    url: https://api.landcor.com/docs
 - aid: landcor:landcor-property-api
-  name: Landcor Property API
-  description: >-
-    The Landcor Property API is a live REST service on api.landcor.com that publishes a
-    valid OpenAPI 3.1.0 contract titled "Landcor Property API" version 0.1.0, served
-    anonymously at https://api.landcor.com/openapi.json (HTTP 200, 47,840 bytes, fetched
-    2026-07-26) with interactive Swagger UI at /docs and ReDoc at /redoc. It exposes
-    twelve operations across four tags. Property covers GET /property/search (address
-    filters for unit number, street direction, street number, street name and postal
-    code), GET /property/{pid} for full property detail keyed on the Landcor PID in
-    xxx-xxx-xxx format, GET /property/{pid}/report/pdf which returns a base64-encoded,
-    password-protected PDF report, and GET /address/autocomplete. Valuation covers GET
-    /valuationRange/{pid}, GET /valuationRange/{pid}/updates, GET
-    /valuationRange/{pid}/history, POST /valuation/ltv-check for loan-to-value
-    comparison against the AVM value, and GET
-    /valuation/neighbourhood/{neighbourhood_code}/{unit_type_code}/sales for aggregated
-    monthly or rolling-three-month neighbourhood sales series. Comparables covers GET
-    /comparables/{pid}. AVM Summary covers POST /generate-avm-summary, which generates a
-    narrative summary from Landcor AVM data. Health covers GET /health, the only
-    unauthenticated operation, which returns {"status":"ok"}. Authentication is a single
-    HTTPBearer security scheme; every other operation declares it and returns HTTP 401
-    with {"detail":"Missing token"} when called anonymously, verified against
-    /property/search, /address/autocomplete and /valuationRange/{pid} on 2026-07-26. The
-    contract is public but the credentials are not: Landcor publishes no developer
-    portal, no key issuance page, no API pricing and no API terms, and does not reference
-    api.landcor.com anywhere on landcor.com, so tokens are obtainable only through a
-    direct commercial arrangement with the company. The specification's own operation
-    descriptions disclose the implementation behind it, naming the stored procedure
-    USP_SEARCH_SERVICE_PROPERTY and a legacy Landcor SOAP webservice that produces the
-    PDF report, which is recorded here as harvested fact rather than as documentation
-    Landcor intended to publish.
+  name: Landcor Data Property API
+  description: The Property API from Landcor Data — 4 operation(s) for property.
   humanURL: https://api.landcor.com/docs
   baseURL: https://api.landcor.com
   tags:
   - Property
-  - Valuation
-  - AVM
-  - Comparables
-  - Real-Estate
-  - Canada
-  tags_raw:
-  - Property
-  - Valuation
-  - AVM
-  - Comparables
-  - Real Estate
-  - Canada
   properties:
   - type: OpenAPI
-    url: openapi/landcor-property-api-openapi.json
-  - type: Overlay
-    url: overlays/landcor-property-api-overlay.yaml
+    url: openapi/landcor-property-api-openapi.yml
+  - type: Documentation
+    url: https://api.landcor.com/docs
+  - type: APIReference
+    url: https://api.landcor.com/redoc
+  - type: Authentication
+    url: https://api.landcor.com/docs
+- aid: landcor:landcor-valuation-api
+  name: Landcor Data Valuation API
+  description: The Valuation API from Landcor Data — 5 operation(s) for valuation.
+  humanURL: https://api.landcor.com/docs
+  baseURL: https://api.landcor.com
+  tags:
+  - Valuation
+  properties:
+  - type: OpenAPI
+    url: openapi/landcor-valuation-api-openapi.yml
   - type: Documentation
     url: https://api.landcor.com/docs
   - type: APIReference
