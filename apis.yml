@@ -152,6 +152,9 @@ apis:
   - type: Authentication
     url: https://api.landcor.com/docs
 common:
+- type: CapabilityMap
+  url: capabilities/landcor-capability-edges.yml
+  name: Landcor Data Business Capability Map
 - type: AgenticAccess
   url: agentic-access/landcor-agentic-access.yml
 - type: DomainSecurity

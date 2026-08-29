@@ -1,0 +1,48 @@
+slug: landcor
+provider: Landcor Data
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Real Estate
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Comparables
+  spec_file: landcor-comparables-api-openapi.yml
+  capability_id: BC-4970.30
+  capability_id_l1: BC-4970
+  capability_name: Market Data & Comparable Curation
+  confidence: 0.8
+  evidence: GET /comparables/{pid} "Retrieve properties comparable to the given PID."; schemas "ComparableProperty",
+    "PropertySaleSection", "BCAssessmentSection"
+  reason: Returns curated comparable properties with sale and assessment detail for a subject parcel —
+    squarely comparable-transaction data curation supporting valuation conclusions.
+- tag: Valuation
+  spec_file: landcor-valuation-api-openapi.yml
+  capability_id: BC-4970
+  capability_id_l1: BC-4970
+  capability_name: Real Estate Valuation & Appraisal Management
+  confidence: 0.8
+  evidence: GET /valuationRange/{pid} "Retrieve valuation range information for a property."; GET /valuationRange/{pid}/history
+    "Retrieve the complete valuation history for a property"; POST /valuation/ltv-check "Compare a property's
+    AVM value against a provided LTV amount."
+  reason: Operations produce property valuation ranges, valuation history and AVM-based LTV comparison
+    — clearly real-estate valuation. L2 left null because the surface spans value derivation, recurring
+    revaluation and lender-facing checks without naming one sub-capability.
+- tag: AVM Summary
+  spec_file: landcor-avm-summary-api-openapi.yml
+  capability_id: BC-4970.40
+  capability_id_l1: BC-4970
+  capability_name: Valuation Approach Application
+  confidence: 0.7
+  evidence: POST /generate-avm-summary "Generate Avm Summary"; schemas "ComparableSale", "SubjectProperty",
+    "ValuationMeta", "NeighbourhoodValueRange"
+  reason: The operation produces an automated valuation summary for a subject property using comparable
+    sales, assessment years and neighbourhood value ranges — application of the sales-comparison valuation
+    approach. L2 confidence moderate since an AVM is an automated rather than appraiser-applied approach.
