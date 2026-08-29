@@ -8,6 +8,17 @@ info:
     API OpenAPI 3.1.0 document; every operationId was verified verbatim against
     openapi/landcor-property-api-openapi.json. All steps require an Authorization: Bearer token,
     for which Landcor publishes no issuance route.
+  x-realizes-capability-ids:
+  - BC-4970
+  x-capability-derivation:
+    method: 'deterministic join: sourceDescriptions -> per-tag OpenAPI -> tag/capability edge. No classification at this step.'
+    min_confidence: 0.7
+    sources:
+    - capability_id: BC-4970
+      capability_name: Real Estate Valuation & Appraisal Management
+      spec: landcor-valuation-api-openapi.yml
+      confidence: 0.8
+    model: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities, CC BY 4.0
 sourceDescriptions:
 - name: propertyApi
   url: ../openapi/landcor-property-api-openapi.yml
