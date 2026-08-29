@@ -33,6 +33,17 @@ description: >-
   published: the underlying assessment, title and cadastral data is licensed to Landcor
   from provincial bodies and resold, so the public record itself is a commercial
   product here.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.landcor.com/wp-content/uploads/2026/01/favicon-152.png
 tags:
 - Real-Estate
