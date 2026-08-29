@@ -1,7 +1,7 @@
-generated: '2026-07-26'
-method: generated
-source: openapi/landcor-property-api-openapi.json
-note: >-
+x-generated: '2026-07-26'
+x-method: generated
+x-source: openapi/landcor-property-api-openapi.json
+x-note: >-
   Native Arazzo 1.0.1 workflows stitching Landcor's own operations into real multi-step use
   cases. sourceDescriptions use the relative path ../openapi/landcor-property-api-openapi.json
   and every step operationId was grepped against that spec before it was written. No sandbox or

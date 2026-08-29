@@ -10,8 +10,11 @@ info:
     an Authorization: Bearer token, and Landcor publishes no route to obtain one — anonymous
     calls return HTTP 401 {"detail":"Missing token"}.
 sourceDescriptions:
-- name: landcor
-  url: ../openapi/landcor-property-api-openapi.json
+- name: propertyApi
+  url: ../openapi/landcor-property-api-openapi.yml
+  type: openapi
+- name: valuationApi
+  url: ../openapi/landcor-valuation-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: address-to-valuation

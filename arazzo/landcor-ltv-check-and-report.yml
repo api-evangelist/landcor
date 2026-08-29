@@ -9,8 +9,11 @@ info:
     openapi/landcor-property-api-openapi.json. All steps require an Authorization: Bearer token,
     for which Landcor publishes no issuance route.
 sourceDescriptions:
-- name: landcor
-  url: ../openapi/landcor-property-api-openapi.json
+- name: propertyApi
+  url: ../openapi/landcor-property-api-openapi.yml
+  type: openapi
+- name: valuationApi
+  url: ../openapi/landcor-valuation-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: ltv-check-and-report
