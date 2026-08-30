@@ -1,0 +1,710 @@
+openapi: 3.2.0
+info:
+  title: Landcor Property Comparables API
+  version: 0.1.0
+tags:
+- name: Comparables
+paths:
+  /comparables/{pid}:
+    get:
+      tags:
+      - Comparables
+      summary: Retrieve properties comparable to the given PID.
+      operationId: read_comparables_comparables__pid__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          description: Property identifier in format xxx-xxx-xxx
+          title: Pid
+        description: Property identifier in format xxx-xxx-xxx
+        example: xxx-xxx-xxx
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComparablesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PropertyUsageSection:
+      properties:
+        use_code:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Use Code
+        use_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Use Description
+        unit_type_code:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Unit Type Code
+        unit_type_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unit Type Description
+        development_class:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Development Class
+        development_class_sign:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Development Class Sign
+        actual_use_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Actual Use Type
+        manual_class_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Manual Class Type
+        is_rural_property:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Rural Property
+        zoning_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zoning Code
+        zoning_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zoning Description
+        school_district:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: School District
+        regional_district:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Regional District
+        electoral_area:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Electoral Area
+        hospital_district:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hospital District
+        improvement_district:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Improvement District
+        local_area:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Local Area
+      type: object
+      title: PropertyUsageSection
+      description: Classification and jurisdiction metadata describing how the parcel is used.
+    OtherSection:
+      properties:
+        owner_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Address
+        characteristics:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Characteristics
+        legal_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Description
+          description: Formatted legal description string.
+        additional_pids:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Additional Pids
+          description: Comma separated list of additional parcel identifiers.
+        legal_lot:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Lot
+          description: Lot identifier parsed from the legal description.
+        legal_block:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Block
+          description: Block identifier parsed from the legal description.
+        legal_section:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Section
+          description: Section identifier parsed from the legal description.
+        legal_township:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Township
+          description: Township identifier parsed from the legal description.
+        legal_range:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Range
+          description: Range identifier parsed from the legal description.
+        legal_meridian:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Meridian
+          description: Meridian identifier parsed from the legal description.
+        legal_plan:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Plan
+          description: Plan identifier parsed from the legal description.
+        legal_district_lot:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal District Lot
+          description: District lot identifier parsed from the legal description.
+        legal_land_district:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legal Land District
+          description: Land district identifier parsed from the legal description.
+        alr:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Alr
+        coop:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Coop
+      type: object
+      title: OtherSection
+      description: Additional jurisdictional and legal identifiers.
+    ExteriorDataSection:
+      properties:
+        year_built:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Year Built
+        effective_year:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Effective Year
+        foundation_type_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foundation Type Code
+        foundation_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foundation Type
+        covered_deck_area:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Covered Deck Area
+        uncovered_deck_area:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Uncovered Deck Area
+        carports:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Carports
+        single_garages:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Single Garages
+        multi_garages:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Multi Garages
+        parking_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parking Summary
+          description: Human readable summary of available parking counts.
+        has_pool:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Has Pool
+        pool:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Pool
+        other_buildings:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Other Buildings
+        exterior_type_code:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Exterior Type Code
+        exterior_type_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Exterior Type Description
+        corner_lot:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Corner Lot
+        waterfront_lot:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Waterfront Lot
+        water_lot:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Water Lot
+        prime_view_lot:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Prime View Lot
+        good_view_lot:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Good View Lot
+        fair_view_lot:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Fair View Lot
+        lot_size_sq_ft:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Lot Size Sq Ft
+          description: Lot size expressed in square feet.
+        lot_size_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lot Size Text
+          description: Formatted lot size string including square feet and acres.
+        lot_size_freeform:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lot Size Freeform
+          description: Freeform lot size value captured by BC Assessment.
+        lot_width_ft:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Lot Width Ft
+          description: Lot width in feet.
+        lot_depth_ft:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Lot Depth Ft
+          description: Lot depth in feet.
+      type: object
+      title: ExteriorDataSection
+      description: Exterior construction, site dimensions, parking, and amenity data.
+    BCAssessmentSection:
+      properties:
+        assessment_area_code:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Assessment Area Code
+        assessment_area:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assessment Area
+        jurisdiction_code:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Jurisdiction Code
+        jurisdiction:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Jurisdiction
+        roll_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Roll Number
+        neighbourhood_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Neighbourhood Code
+        neighbourhood:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Neighbourhood
+        last_land_value_amount:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Last Land Value Amount
+          description: Most recent assessed value assigned to the land portion.
+        last_improvement_value_amount:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Last Improvement Value Amount
+          description: Most recent assessed value of the improvements on the parcel.
+        last_total_value_amount:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Last Total Value Amount
+          description: Most recent total assessed value of the property.
+        previous_total_value_amount:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Previous Total Value Amount
+          description: Previous year's total assessed value.
+        price_per_square_foot:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Price Per Square Foot
+          description: Derived price per finished square foot using the latest assessment.
+        year_over_year_change:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Year Over Year Change
+          description: Year over year percentage change of the assessment value.
+      type: object
+      title: BCAssessmentSection
+      description: Valuation metrics sourced from BC Assessment.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PropertySaleSection:
+      properties:
+        sale_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Sale Date
+          description: Recorded date of the most recent sale.
+          example: '2023-08-15'
+        sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Sale Price
+          description: Recorded consideration amount for the most recent sale.
+          example: 850000.0
+      type: object
+      title: PropertySaleSection
+      description: Latest sale metadata for the property.
+    ComparableProperty:
+      properties:
+        address:
+          allOf:
+          - $ref: '#/components/schemas/PropertyAddressMetadata'
+          description: Formatted address metadata for the comparable property.
+        distance_to_subject_property:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Distance To Subject Property
+          description: Human readable distance from the comparable to the subject property.
+        distance_to_subject_property_meters:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Distance To Subject Property Meters
+          description: Numeric distance from the comparable to the subject property in meters.
+        assessment:
+          allOf:
+          - $ref: '#/components/schemas/BCAssessmentSection'
+          description: Assessment and lot size information for the comparable property.
+        usage:
+          allOf:
+          - $ref: '#/components/schemas/PropertyUsageSection'
+          description: Classification and zoning details for the comparable property.
+        exterior:
+          allOf:
+          - $ref: '#/components/schemas/ExteriorDataSection'
+          description: Exterior construction and amenity data for the comparable property.
+        interior:
+          allOf:
+          - $ref: '#/components/schemas/InteriorDataSection'
+          description: Interior layout information for the comparable property.
+        other:
+          allOf:
+          - $ref: '#/components/schemas/OtherSection'
+          description: Additional identifiers and legal metadata for the comparable property.
+        sale:
+          anyOf:
+          - $ref: '#/components/schemas/PropertySaleSection'
+          - type: 'null'
+          description: Latest sale metadata for the comparable property if available.
+      type: object
+      title: ComparableProperty
+      description: Comparable property details grouped into shared property sections.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PropertyAddressMetadata:
+      properties:
+        property_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Property Address
+          description: Display-ready mailing address for the property.
+        unit_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unit Number
+          description: Unit, suite, or apartment identifier for the property.
+        street_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street Number
+          description: Street number or number range for the property.
+        street_number_from:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street Number From
+          description: Starting street number for the property.
+        street_number_to:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street Number To
+          description: Ending street number for the property when a range is provided.
+        street_direction:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street Direction
+          description: Street direction or quadrant (e.g., W, NE).
+        street_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street Name
+          description: Normalized street name for the property.
+        city:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+          description: Normalized city name
+        postal_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Postal Code
+          description: Postal or ZIP code for the property.
+        address_query:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address Query
+          description: Formatted address string used for map queries.
+        geo_coordinate_query:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Geo Coordinate Query
+          description: Comma separated latitude/longitude value for map lookups.
+      type: object
+      title: PropertyAddressMetadata
+      description: Formatted address details and related map metadata.
+    ComparablesResponse:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        comparables:
+          items:
+            $ref: '#/components/schemas/ComparableProperty'
+          type: array
+          title: Comparables
+      type: object
+      required:
+      - pid
+      - comparables
+      title: ComparablesResponse
+      description: Response schema for comparable properties.
+    InteriorDataSection:
+      properties:
+        stories:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Stories
+        bedrooms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bedrooms
+        bathrooms_4_piece:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bathrooms 4 Piece
+        bathrooms_3_piece:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bathrooms 3 Piece
+        bathrooms_2_piece:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bathrooms 2 Piece
+        bathroom_total:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bathroom Total
+        fireplaces:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fireplaces
+        fireplace_total:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fireplace Total
+        fireplace_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fireplace Type
+        total_basement_area:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Basement Area
+        finished_basement_area:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Finished Basement Area
+        basement_unfinished_area:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Basement Unfinished Area
+        basement_finished_area:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Basement Finished Area
+        main_finished_area:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Main Finished Area
+        total_finished_area:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Finished Area
+          description: Total finished area in square feet for the primary structure.
+      type: object
+      title: InteriorDataSection
+      description: Interior counts, configuration details, and square-footage metrics.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

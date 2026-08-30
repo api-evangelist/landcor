@@ -1,0 +1,25 @@
+openapi: 3.2.0
+info:
+  title: Landcor Property Health API
+  version: 0.1.0
+tags:
+- name: Health
+paths:
+  /health:
+    get:
+      tags:
+      - Health
+      summary: Service health check
+      description: Simple liveness endpoint for load balancers and uptime checks.
+      operationId: health_check_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

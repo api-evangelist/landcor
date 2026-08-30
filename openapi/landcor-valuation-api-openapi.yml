@@ -1,0 +1,424 @@
+openapi: 3.2.0
+info:
+  title: Landcor Property Valuation API
+  version: 0.1.0
+tags:
+- name: Valuation
+paths:
+  /valuationRange/{pid}:
+    get:
+      tags:
+      - Valuation
+      summary: Retrieve valuation range information for a property.
+      description: "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID."
+      operationId: read_valuation_range_valuationRange__pid__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          description: Property identifier in format xxx-xxx-xxx
+          title: Pid
+        description: Property identifier in format xxx-xxx-xxx
+        example: xxx-xxx-xxx
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValuationRangeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /valuationRange/{pid}/updates:
+    get:
+      tags:
+      - Valuation
+      summary: Return the valuation range for compatibility with the updates endpoint.
+      description: "Historically this endpoint exposed multiple update strategies. The\n    functionality now mirrors :func:`get_property_valuation_range` so that\n    clients receive the same data as the valuation range endpoint.\n\n    Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID."
+      operationId: read_property_monthly_update_valuationRange__pid__updates_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          description: Property identifier in format xxx-xxx-xxx
+          title: Pid
+        description: Property identifier in format xxx-xxx-xxx
+        example: xxx-xxx-xxx
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValuationRangeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /valuationRange/{pid}/history:
+    get:
+      tags:
+      - Valuation
+      summary: Retrieve the complete valuation history for a property.
+      description: "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationHistoryResponse containing chronological valuation data points.\n\n    Business Rules:\n        * A 404 error is raised if no valuation history exists for the PID."
+      operationId: read_valuation_history_valuationRange__pid__history_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          description: Property identifier in format xxx-xxx-xxx
+          title: Pid
+        description: Property identifier in format xxx-xxx-xxx
+        example: xxx-xxx-xxx
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValuationHistoryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /valuation/ltv-check:
+    post:
+      tags:
+      - Valuation
+      summary: Compare a property's AVM value against a provided LTV amount.
+      operationId: run_ltv_check_valuation_ltv_check_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LTVCheckRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LTVCheckResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /valuation/neighbourhood/{neighbourhood_code}/{unit_type_code}/sales:
+    get:
+      tags:
+      - Valuation
+      summary: Retrieve aggregated neighbourhood sales data.
+      description: "Args:\n        neighbourhood_code: Assessment neighbourhood identifier.\n        unit_type_code: Unit type grouping for comparable sales.\n        interval: Aggregation interval flag (``\"monthly\"`` or ``\"rolling3m\"``).\n        months: Number of months of data to request.\n        snapshot_day: Preferred day of the month for aggregation snapshots.\n\n    Returns:\n        NeighbourhoodSalesSeriesResponse containing sales metrics over time.\n\n    Business Rules:\n        * A 400 error is raised if ``interval`` is not recognised.\n        * A 404 error is raised when no sales data is available."
+      operationId: read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: neighbourhood_code
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: Assessment neighbourhood identifier.
+          title: Neighbourhood Code
+        description: Assessment neighbourhood identifier.
+      - name: unit_type_code
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: Unit type code used to group comparable properties.
+          title: Unit Type Code
+        description: Unit type code used to group comparable properties.
+      - name: interval
+        in: query
+        required: false
+        schema:
+          enum:
+          - monthly
+          - rolling3m
+          type: string
+          description: Aggregation interval for the sales series. Use 'monthly' for discrete months or 'rolling3m' for rolling averages.
+          default: monthly
+          title: Interval
+        description: Aggregation interval for the sales series. Use 'monthly' for discrete months or 'rolling3m' for rolling averages.
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Number of months of history to include in the response.
+          default: 24
+          title: Months
+        description: Number of months of history to include in the response.
+      - name: snapshot_day
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 31
+          minimum: 1
+          description: Preferred day of the month for the aggregation snapshot.
+          default: 15
+          title: Snapshot Day
+        description: Preferred day of the month for the aggregation snapshot.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeighbourhoodSalesSeriesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValuationRangeResponse:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        low_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Low Range Value
+        high_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: High Range Value
+      type: object
+      required:
+      - pid
+      title: ValuationRangeResponse
+      description: Valuation range for a property.
+    ValuationHistoryPoint:
+      properties:
+        snapshot_date:
+          type: string
+          format: date
+          title: Snapshot Date
+        low_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Low Range Value
+        high_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: High Range Value
+      type: object
+      required:
+      - snapshot_date
+      title: ValuationHistoryPoint
+      description: Single valuation history snapshot for a property.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LTVCheckRequest:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        ltv_amount:
+          type: number
+          exclusiveMinimum: 0.0
+          title: Ltv Amount
+          description: Loan-to-value amount to compare against the property's AVM value.
+          example: 500000
+      type: object
+      required:
+      - pid
+      - ltv_amount
+      title: LTVCheckRequest
+      description: Request body for comparing a property's AVM against an LTV amount.
+    ValuationHistoryResponse:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        points:
+          items:
+            $ref: '#/components/schemas/ValuationHistoryPoint'
+          type: array
+          title: Points
+          description: Chronological valuation history records for the property.
+      type: object
+      required:
+      - pid
+      title: ValuationHistoryResponse
+      description: Collection of valuation history points for a property.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    NeighbourhoodSalesPoint:
+      properties:
+        period_start:
+          type: string
+          format: date
+          title: Period Start
+          description: First day of the aggregation period represented by the data point.
+        period_end:
+          type: string
+          format: date
+          title: Period End
+          description: Last day of the aggregation period represented by the data point.
+        min_sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min Sale Price
+          description: Lowest sale price recorded during the aggregation period.
+        max_sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max Sale Price
+          description: Highest sale price recorded during the aggregation period.
+        avg_sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Avg Sale Price
+          description: Average sale price recorded during the aggregation period.
+        median_sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Median Sale Price
+          description: Median sale price recorded during the aggregation period.
+        data_source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Data Source
+          description: Originating data source for the aggregated sales metrics.
+      type: object
+      required:
+      - period_start
+      - period_end
+      title: NeighbourhoodSalesPoint
+      description: Aggregated sales metrics for a neighbourhood and unit type.
+    NeighbourhoodSalesSeriesResponse:
+      properties:
+        neighbourhood_code:
+          type: string
+          title: Neighbourhood Code
+          description: Identifier of the neighbourhood that the sales data relates to.
+        unit_type_code:
+          type: string
+          title: Unit Type Code
+          description: Unit type code used to group comparable sales records.
+        points:
+          items:
+            $ref: '#/components/schemas/NeighbourhoodSalesPoint'
+          type: array
+          title: Points
+          description: Chronological series of aggregated sales metrics.
+      type: object
+      required:
+      - neighbourhood_code
+      - unit_type_code
+      title: NeighbourhoodSalesSeriesResponse
+      description: Response wrapper for neighbourhood sales series data.
+    LTVCheckResponse:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        ltv_amount:
+          type: number
+          title: Ltv Amount
+          description: Loan-to-value amount supplied in the request.
+        has_avm:
+          type: boolean
+          title: Has Avm
+          description: Indicates whether the property has an AVM value on record.
+        avm_exceeds_ltv:
+          type: boolean
+          title: Avm Exceeds Ltv
+          description: True when the property's AVM value is greater than the provided LTV amount.
+      type: object
+      required:
+      - pid
+      - ltv_amount
+      - has_avm
+      - avm_exceeds_ltv
+      title: LTVCheckResponse
+      description: Outcome of comparing a property's AVM against an LTV amount.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
