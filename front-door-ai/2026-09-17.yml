@@ -1,0 +1,26 @@
+# Front Door AI Index — landcor — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: landcor
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.landcor.com
+  final_host: www.landcor.com
+  ownership: own
+  owner: landcor
+  shares_host_with: null
+  inherited_from: null
+  verdict: silent
+  score: 0
+  host_score: 0
+  density: 0.0
+  words: 1100
+  tiers:
+    agentic: 0
+    core: 0
+    model: 0
+  ambiguous: 2
+  top_terms:
+    agent: 1
+    intelligence: 1

@@ -1,0 +1,33 @@
+{
+  "provider": "landcor",
+  "sources": [
+    "_original/landcor-property-api-openapi.json"
+  ],
+  "outputs": [
+    "landcor-avm-summary-api-openapi.yml",
+    "landcor-comparables-api-openapi.yml",
+    "landcor-health-api-openapi.yml",
+    "landcor-property-api-openapi.yml",
+    "landcor-valuation-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "landcor-property-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "landcor-property-api-openapi.json: declared missing tag: AVM Summary",
+    "landcor-property-api-openapi.json: declared missing tag: Comparables",
+    "landcor-property-api-openapi.json: declared missing tag: Health",
+    "landcor-property-api-openapi.json: declared missing tag: Property",
+    "landcor-property-api-openapi.json: declared missing tag: Valuation",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "landcor-avm-summary-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "landcor-comparables-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "landcor-health-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "landcor-property-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "landcor-valuation-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

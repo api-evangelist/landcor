@@ -9,8 +9,20 @@ paths:
     get:
       tags:
       - Valuation
-      summary: Retrieve valuation range information for a property.
-      description: "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID."
+      summary: Retrieve valuation range information for a property
+      description: 'Args:
+
+        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.
+
+
+        Returns:
+
+        ValuationRangeResponse with low and high valuation range values.
+
+
+        Business Rules:
+
+        * A 404 error is raised if no valuation record exists for the PID.'
       operationId: read_valuation_range_valuationRange__pid__get
       security:
       - HTTPBearer: []
@@ -42,8 +54,27 @@ paths:
     get:
       tags:
       - Valuation
-      summary: Return the valuation range for compatibility with the updates endpoint.
-      description: "Historically this endpoint exposed multiple update strategies. The\n    functionality now mirrors :func:`get_property_valuation_range` so that\n    clients receive the same data as the valuation range endpoint.\n\n    Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationRangeResponse with low and high valuation range values.\n\n    Business Rules:\n        * A 404 error is raised if no valuation record exists for the PID."
+      summary: Return the valuation range for compatibility with the updates endpoint
+      description: 'Historically this endpoint exposed multiple update strategies. The
+
+        functionality now mirrors :func:`get_property_valuation_range` so that
+
+        clients receive the same data as the valuation range endpoint.
+
+
+        Args:
+
+        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.
+
+
+        Returns:
+
+        ValuationRangeResponse with low and high valuation range values.
+
+
+        Business Rules:
+
+        * A 404 error is raised if no valuation record exists for the PID.'
       operationId: read_property_monthly_update_valuationRange__pid__updates_get
       security:
       - HTTPBearer: []
@@ -75,8 +106,20 @@ paths:
     get:
       tags:
       - Valuation
-      summary: Retrieve the complete valuation history for a property.
-      description: "Args:\n        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.\n\n    Returns:\n        ValuationHistoryResponse containing chronological valuation data points.\n\n    Business Rules:\n        * A 404 error is raised if no valuation history exists for the PID."
+      summary: Retrieve the complete valuation history for a property
+      description: 'Args:
+
+        pid: Landcor property identifier in ``xxx-xxx-xxx`` format.
+
+
+        Returns:
+
+        ValuationHistoryResponse containing chronological valuation data points.
+
+
+        Business Rules:
+
+        * A 404 error is raised if no valuation history exists for the PID.'
       operationId: read_valuation_history_valuationRange__pid__history_get
       security:
       - HTTPBearer: []
@@ -108,7 +151,7 @@ paths:
     post:
       tags:
       - Valuation
-      summary: Compare a property's AVM value against a provided LTV amount.
+      summary: Compare a property's AVM value against a provided LTV amount
       operationId: run_ltv_check_valuation_ltv_check_post
       requestBody:
         content:
@@ -135,8 +178,30 @@ paths:
     get:
       tags:
       - Valuation
-      summary: Retrieve aggregated neighbourhood sales data.
-      description: "Args:\n        neighbourhood_code: Assessment neighbourhood identifier.\n        unit_type_code: Unit type grouping for comparable sales.\n        interval: Aggregation interval flag (``\"monthly\"`` or ``\"rolling3m\"``).\n        months: Number of months of data to request.\n        snapshot_day: Preferred day of the month for aggregation snapshots.\n\n    Returns:\n        NeighbourhoodSalesSeriesResponse containing sales metrics over time.\n\n    Business Rules:\n        * A 400 error is raised if ``interval`` is not recognised.\n        * A 404 error is raised when no sales data is available."
+      summary: Retrieve aggregated neighbourhood sales data
+      description: 'Args:
+
+        neighbourhood_code: Assessment neighbourhood identifier.
+
+        unit_type_code: Unit type grouping for comparable sales.
+
+        interval: Aggregation interval flag (``"monthly"`` or ``"rolling3m"``).
+
+        months: Number of months of data to request.
+
+        snapshot_day: Preferred day of the month for aggregation snapshots.
+
+
+        Returns:
+
+        NeighbourhoodSalesSeriesResponse containing sales metrics over time.
+
+
+        Business Rules:
+
+        * A 400 error is raised if ``interval`` is not recognised.
+
+        * A 404 error is raised when no sales data is available.'
       operationId: read_neighbourhood_sales_series_valuation_neighbourhood__neighbourhood_code___unit_type_code__sales_get
       security:
       - HTTPBearer: []
@@ -230,6 +295,47 @@ components:
       - pid
       title: ValuationRangeResponse
       description: Valuation range for a property.
+    LTVCheckRequest:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        ltv_amount:
+          type: number
+          exclusiveMinimum: 0.0
+          title: Ltv Amount
+          description: Loan-to-value amount to compare against the property's AVM value.
+          example: 500000
+      type: object
+      required:
+      - pid
+      - ltv_amount
+      title: LTVCheckRequest
+      description: Request body for comparing a property's AVM against an LTV amount.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ValuationHistoryPoint:
       properties:
         snapshot_date:
@@ -260,26 +366,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    LTVCheckRequest:
-      properties:
-        pid:
-          type: string
-          pattern: ^\d{3}-\d{3}-\d{3}$
-          title: Pid
-          description: Property identifier in format xxx-xxx-xxx
-          example: xxx-xxx-xxx
-        ltv_amount:
-          type: number
-          exclusiveMinimum: 0.0
-          title: Ltv Amount
-          description: Loan-to-value amount to compare against the property's AVM value.
-          example: 500000
-      type: object
-      required:
-      - pid
-      - ltv_amount
-      title: LTVCheckRequest
-      description: Request body for comparing a property's AVM against an LTV amount.
     ValuationHistoryResponse:
       properties:
         pid:
@@ -299,27 +385,6 @@ components:
       - pid
       title: ValuationHistoryResponse
       description: Collection of valuation history points for a property.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     NeighbourhoodSalesPoint:
       properties:
         period_start:
