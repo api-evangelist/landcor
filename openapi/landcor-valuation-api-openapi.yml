@@ -272,49 +272,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValuationRangeResponse:
+    HTTPValidationError:
       properties:
-        pid:
-          type: string
-          pattern: ^\d{3}-\d{3}-\d{3}$
-          title: Pid
-          description: Property identifier in format xxx-xxx-xxx
-          example: xxx-xxx-xxx
-        low_range_value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Low Range Value
-        high_range_value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: High Range Value
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - pid
-      title: ValuationRangeResponse
-      description: Valuation range for a property.
-    LTVCheckRequest:
-      properties:
-        pid:
-          type: string
-          pattern: ^\d{3}-\d{3}-\d{3}$
-          title: Pid
-          description: Property identifier in format xxx-xxx-xxx
-          example: xxx-xxx-xxx
-        ltv_amount:
-          type: number
-          exclusiveMinimum: 0.0
-          title: Ltv Amount
-          description: Loan-to-value amount to compare against the property's AVM value.
-          example: 500000
-      type: object
-      required:
-      - pid
-      - ltv_amount
-      title: LTVCheckRequest
-      description: Request body for comparing a property's AVM against an LTV amount.
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -336,36 +302,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ValuationHistoryPoint:
-      properties:
-        snapshot_date:
-          type: string
-          format: date
-          title: Snapshot Date
-        low_range_value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Low Range Value
-        high_range_value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: High Range Value
-      type: object
-      required:
-      - snapshot_date
-      title: ValuationHistoryPoint
-      description: Single valuation history snapshot for a property.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValuationHistoryResponse:
       properties:
         pid:
@@ -385,6 +321,34 @@ components:
       - pid
       title: ValuationHistoryResponse
       description: Collection of valuation history points for a property.
+    LTVCheckResponse:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        ltv_amount:
+          type: number
+          title: Ltv Amount
+          description: Loan-to-value amount supplied in the request.
+        has_avm:
+          type: boolean
+          title: Has Avm
+          description: Indicates whether the property has an AVM value on record.
+        avm_exceeds_ltv:
+          type: boolean
+          title: Avm Exceeds Ltv
+          description: True when the property's AVM value is greater than the provided LTV amount.
+      type: object
+      required:
+      - pid
+      - ltv_amount
+      - has_avm
+      - avm_exceeds_ltv
+      title: LTVCheckResponse
+      description: Outcome of comparing a property's AVM against an LTV amount.
     NeighbourhoodSalesPoint:
       properties:
         period_start:
@@ -433,6 +397,70 @@ components:
       - period_end
       title: NeighbourhoodSalesPoint
       description: Aggregated sales metrics for a neighbourhood and unit type.
+    LTVCheckRequest:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        ltv_amount:
+          type: number
+          exclusiveMinimum: 0.0
+          title: Ltv Amount
+          description: Loan-to-value amount to compare against the property's AVM value.
+          example: 500000
+      type: object
+      required:
+      - pid
+      - ltv_amount
+      title: LTVCheckRequest
+      description: Request body for comparing a property's AVM against an LTV amount.
+    ValuationHistoryPoint:
+      properties:
+        snapshot_date:
+          type: string
+          format: date
+          title: Snapshot Date
+        low_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Low Range Value
+        high_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: High Range Value
+      type: object
+      required:
+      - snapshot_date
+      title: ValuationHistoryPoint
+      description: Single valuation history snapshot for a property.
+    ValuationRangeResponse:
+      properties:
+        pid:
+          type: string
+          pattern: ^\d{3}-\d{3}-\d{3}$
+          title: Pid
+          description: Property identifier in format xxx-xxx-xxx
+          example: xxx-xxx-xxx
+        low_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Low Range Value
+        high_range_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: High Range Value
+      type: object
+      required:
+      - pid
+      title: ValuationRangeResponse
+      description: Valuation range for a property.
     NeighbourhoodSalesSeriesResponse:
       properties:
         neighbourhood_code:
@@ -455,34 +483,6 @@ components:
       - unit_type_code
       title: NeighbourhoodSalesSeriesResponse
       description: Response wrapper for neighbourhood sales series data.
-    LTVCheckResponse:
-      properties:
-        pid:
-          type: string
-          pattern: ^\d{3}-\d{3}-\d{3}$
-          title: Pid
-          description: Property identifier in format xxx-xxx-xxx
-          example: xxx-xxx-xxx
-        ltv_amount:
-          type: number
-          title: Ltv Amount
-          description: Loan-to-value amount supplied in the request.
-        has_avm:
-          type: boolean
-          title: Has Avm
-          description: Indicates whether the property has an AVM value on record.
-        avm_exceeds_ltv:
-          type: boolean
-          title: Avm Exceeds Ltv
-          description: True when the property's AVM value is greater than the provided LTV amount.
-      type: object
-      required:
-      - pid
-      - ltv_amount
-      - has_avm
-      - avm_exceeds_ltv
-      title: LTVCheckResponse
-      description: Outcome of comparing a property's AVM against an LTV amount.
   securitySchemes:
     HTTPBearer:
       type: http
