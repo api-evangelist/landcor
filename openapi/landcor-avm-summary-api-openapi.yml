@@ -35,6 +35,53 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AssessmentYear:
+      properties:
+        year:
+          type: integer
+          title: Year
+        land:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Land
+        improvements:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Improvements
+        total:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total
+      type: object
+      required:
+      - year
+      title: AssessmentYear
+    ValuationChange:
+      properties:
+        last_sale_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Sale Date
+        last_sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Last Sale Price
+      type: object
+      title: ValuationChange
     NeighbourhoodValueRange:
       properties:
         low:
@@ -54,6 +101,106 @@ components:
           title: High
       type: object
       title: NeighbourhoodValueRange
+    NeighbourhoodInsights:
+      properties:
+        avg_assessed_value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Avg Assessed Value
+        avg_price_last_6_months:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Avg Price Last 6 Months
+        last_valid_sale_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Valid Sale Date
+        value_range:
+          anyOf:
+          - $ref: '#/components/schemas/NeighbourhoodValueRange'
+          - type: 'null'
+      type: object
+      title: NeighbourhoodInsights
+    HistoricalSale:
+      properties:
+        date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+        amount:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Amount
+        sale_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sale Type
+        title_certificate_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title Certificate Number
+      type: object
+      title: HistoricalSale
+    Permit:
+      properties:
+        date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+        permit_number:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Permit Number
+        demolition:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Demolition
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Value
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      type: object
+      title: Permit
+    NeighbourhoodScores:
+      properties:
+        walk:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Walk
+        transit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Transit
+        bike:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bike
+      type: object
+      title: NeighbourhoodScores
     LandcorAVMSummaryRequest:
       properties:
         subject_property:
@@ -102,6 +249,162 @@ components:
       type: object
       title: LandcorAVMSummaryRequest
       description: Request body for generating an AVM narrative summary.
+    ComparableSale:
+      properties:
+        property_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Property Address
+        last_sale_price:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Last Sale Price
+        last_sale_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Sale Date
+        assessment_land:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Assessment Land
+        assessent_improvements:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Assessent Improvements
+          description: Mirrors the upstream payload's misspelled key.
+        assessment_total:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Assessment Total
+        use_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Use Type
+        characteristics:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Characteristics
+        bedrooms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Bedrooms
+        bathrooms:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Bathrooms
+        floor_area_sqft:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Floor Area Sqft
+        lot_size_sqft:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Lot Size Sqft
+        year_built:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Year Built
+        effective_year:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Effective Year
+        foundation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Foundation
+        parking:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parking
+        neighbourhood:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Neighbourhood
+        latitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Latitude
+        longitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Longitude
+      type: object
+      title: ComparableSale
+      description: Comparable sale with full underwriting detail.
+    PermitHistory:
+      properties:
+        permits:
+          items:
+            $ref: '#/components/schemas/Permit'
+          type: array
+          title: Permits
+        last_permit_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Permit Date
+      type: object
+      title: PermitHistory
+    ClimateEvent:
+      properties:
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+        severity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Severity
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      title: ClimateEvent
+    ValidationResult:
+      properties:
+        valid:
+          type: boolean
+          title: Valid
+          description: Indicator of whether the narrative passed validation.
+        messages:
+          items:
+            type: string
+          type: array
+          title: Messages
+          description: Human readable messages describing validation findings.
+      type: object
+      required:
+      - valid
+      title: ValidationResult
+      description: Result of validating a generated narrative.
     SubjectProperty:
       properties:
         address:
@@ -227,206 +530,6 @@ components:
       type: object
       title: SubjectProperty
       description: Physical, legal and locational attributes of the subject property.
-    HistoricalSale:
-      properties:
-        date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date
-        amount:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Amount
-        sale_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sale Type
-        title_certificate_number:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Title Certificate Number
-      type: object
-      title: HistoricalSale
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationResult:
-      properties:
-        valid:
-          type: boolean
-          title: Valid
-          description: Indicator of whether the narrative passed validation.
-        messages:
-          items:
-            type: string
-          type: array
-          title: Messages
-          description: Human readable messages describing validation findings.
-      type: object
-      required:
-      - valid
-      title: ValidationResult
-      description: Result of validating a generated narrative.
-    LandcorAVMSummaryResponse:
-      properties:
-        summary:
-          type: string
-          title: Summary
-          description: Generated Landcor AVM summary.
-        validation:
-          allOf:
-          - $ref: '#/components/schemas/ValidationResult'
-          description: Validation metadata describing potential issues in the narrative.
-      type: object
-      required:
-      - summary
-      - validation
-      title: LandcorAVMSummaryResponse
-      description: Response payload returned by the narrative generation endpoint.
-    NeighbourhoodScores:
-      properties:
-        walk:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Walk
-        transit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Transit
-        bike:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Bike
-      type: object
-      title: NeighbourhoodScores
-    PermitHistory:
-      properties:
-        permits:
-          items:
-            $ref: '#/components/schemas/Permit'
-          type: array
-          title: Permits
-        last_permit_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Permit Date
-      type: object
-      title: PermitHistory
-    ComparableSale:
-      properties:
-        property_address:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Property Address
-        last_sale_price:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Last Sale Price
-        last_sale_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Sale Date
-        assessment_land:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Assessment Land
-        assessent_improvements:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Assessent Improvements
-          description: Mirrors the upstream payload's misspelled key.
-        assessment_total:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Assessment Total
-        use_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Use Type
-        characteristics:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Characteristics
-        bedrooms:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Bedrooms
-        bathrooms:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Bathrooms
-        floor_area_sqft:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Floor Area Sqft
-        lot_size_sqft:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Lot Size Sqft
-        year_built:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Year Built
-        effective_year:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Effective Year
-        foundation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Foundation
-        parking:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parking
-        neighbourhood:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Neighbourhood
-        latitude:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Latitude
-        longitude:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Longitude
-      type: object
-      title: ComparableSale
-      description: Comparable sale with full underwriting detail.
     ValidationError:
       properties:
         loc:
@@ -448,20 +551,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ClimateEvents:
-      properties:
-        has_recent_events:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Has Recent Events
-        events:
-          items:
-            $ref: '#/components/schemas/ClimateEvent'
-          type: array
-          title: Events
-      type: object
-      title: ClimateEvents
     ValuationMeta:
       properties:
         estimated_value:
@@ -503,125 +592,36 @@ components:
       type: object
       title: ValuationMeta
       description: Headline valuation outputs and methodology.
-    ValuationChange:
+    LandcorAVMSummaryResponse:
       properties:
-        last_sale_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Sale Date
-        last_sale_price:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Last Sale Price
-      type: object
-      title: ValuationChange
-    NeighbourhoodInsights:
-      properties:
-        avg_assessed_value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Avg Assessed Value
-        avg_price_last_6_months:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Avg Price Last 6 Months
-        last_valid_sale_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Valid Sale Date
-        value_range:
-          anyOf:
-          - $ref: '#/components/schemas/NeighbourhoodValueRange'
-          - type: 'null'
-      type: object
-      title: NeighbourhoodInsights
-    AssessmentYear:
-      properties:
-        year:
-          type: integer
-          title: Year
-        land:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Land
-        improvements:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Improvements
-        total:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Total
+        summary:
+          type: string
+          title: Summary
+          description: Generated Landcor AVM summary.
+        validation:
+          allOf:
+          - $ref: '#/components/schemas/ValidationResult'
+          description: Validation metadata describing potential issues in the narrative.
       type: object
       required:
-      - year
-      title: AssessmentYear
-    ClimateEvent:
+      - summary
+      - validation
+      title: LandcorAVMSummaryResponse
+      description: Response payload returned by the narrative generation endpoint.
+    ClimateEvents:
       properties:
-        type:
+        has_recent_events:
           anyOf:
-          - type: string
+          - type: boolean
           - type: 'null'
-          title: Type
-        date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date
-        severity:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Severity
-        notes:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Notes
+          title: Has Recent Events
+        events:
+          items:
+            $ref: '#/components/schemas/ClimateEvent'
+          type: array
+          title: Events
       type: object
-      title: ClimateEvent
-    Permit:
-      properties:
-        date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date
-        permit_number:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Permit Number
-        demolition:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Demolition
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Value
-        status:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Status
-      type: object
-      title: Permit
+      title: ClimateEvents
   securitySchemes:
     HTTPBearer:
       type: http
